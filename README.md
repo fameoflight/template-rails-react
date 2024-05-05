@@ -8,7 +8,7 @@ Please don't different namings, this is amalgamation of my various projects.
 
 - Rails 7
 - Rspec and factory_bot for testing
-- React 18 and Relay Modern
+- React 18 and Relay Modern (Typescript and Suspense)
 - Tailwind CSS
 
 ### Features:
