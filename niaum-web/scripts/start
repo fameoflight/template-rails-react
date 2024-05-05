@@ -1,0 +1,114 @@
+#!/usr/bin/env ruby
+
+require 'pty'
+
+require 'colorize'
+
+def read_ignored_lines
+  path = "#{__dir__}/ignored_line_prefixes.txt"
+
+  lines = File.read(path).split("\n")
+
+  # comments
+  lines = lines.filter { |line| !line.start_with?('#') }
+
+  lines.filter { |line| !line.empty? }
+end
+
+@ignored_lines = read_ignored_lines
+
+def find_files(filepath)
+  ignored_paths = %w[node_modules dist]
+  file_parts = filepath.split('/')
+
+  file_parts = file_parts.filter { |part| !part.start_with?('.') }
+  file_parts = file_parts.filter { |part| !part.start_with?('node_modules') }
+  file_parts = file_parts.filter { |part| !part.start_with?('dist') }
+
+  file_parts = file_parts.filter { |part| !part.empty? }
+
+  parent_dir = __dir__.split('/')[0..-2].join('/')
+
+  file_path = file_parts.last.split(':')[0]
+  line_number = file_parts.last.split(':')[1]
+
+  glob_path = "#{parent_dir}/**/#{file_path}"
+
+  files = Dir.glob(glob_path)
+
+  filepath_parent = file_parts[0..-2].join('/')
+
+  files = files.filter { |file| ignored_paths.none? { |ignored_path| file.include?(ignored_path) } }
+
+  files = files.filter { |file| file.downcase.include?(filepath_parent.downcase) }
+
+  # remove __dir__ from path
+  files.map do |file|
+    "#{file.delete_prefix("#{parent_dir}/")}:#{line_number}"
+  end
+end
+
+def line_ignored?(simple_line)
+  return true if simple_line.downcase.strip == 'warning'
+
+  @ignored_lines.any? { |ignored_line| simple_line.start_with?(ignored_line) }
+end
+
+def error_path(simple_line)
+  absolute_prefixes = ['./', '../', 'src/']
+
+  error_strings = ['ERROR in', 'error -', 'WARNING in'] + absolute_prefixes
+
+  is_error = error_strings.any? { |error_string| simple_line.start_with?(error_string) }
+
+  if is_error
+    return simple_line if absolute_prefixes.any? { |prefix| simple_line.start_with?(prefix) }
+
+    parts = simple_line.split
+
+    filepath = parts.find { |part| absolute_prefixes.any? { |prefix| part.start_with?(prefix) } }
+
+    return filepath if filepath
+  end
+
+  nil
+end
+
+def process_line(line)
+  simple_line = line.gsub(/\e\[([;\d]+)?m/, '').strip
+
+  filepath = error_path(simple_line)
+
+  if filepath
+    # convert filepath to clickable link
+    find_files(filepath).each do |file|
+      puts file.colorize(:blue)
+    end
+  end
+
+  simple_line unless line_ignored?(simple_line) || simple_line.empty?
+end
+
+def run_command(command)
+  PTY.spawn(command) do |stdout, _stdin, _pid|
+    # Do stuff with the output here. Just printing to show it works
+
+    stdout.each do |line|
+      processed_line = process_line(line)
+
+      puts processed_line if processed_line
+    end
+
+  rescue Errno::EIO
+    puts 'Errno:EIO error, but this probably just means ' +
+         'that the process has finished giving output'
+  end
+rescue PTY::ChildExited
+  puts 'The child process exited!'
+end
+
+puts "\e[H\e[2J" # clear screen
+
+ARGV.each do |arg|
+  run_command(arg)
+end

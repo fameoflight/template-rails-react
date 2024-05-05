@@ -1,0 +1,49 @@
+@import 'antd/dist/antd.variable.min.css';
+/* @import 'antd/dist/reset.css'; */
+@import './normalize.css';
+
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+:root {
+  color-scheme: only light;
+  --placeholder-color: #a0aec0;
+}
+
+.ant-btn-primary {
+  button,
+  [type='button'],
+  [type='reset'],
+  [type='ghost'],
+  [type='submit'] {
+    background-color: var(--ant-primary-color);
+  }
+}
+
+.editable-cell {
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+.editable-cell:hover {
+  padding: 4px 11px;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+}
+
+.ant-timeline-item-head {
+  background-color: transparent;
+}
+
+.ant-menu-inline .ant-menu-item {
+  margin-top: 0px !important;
+}
+
+.remove-underline {
+  text-decoration: none;
+}
+
+a[role='none'] {
+  text-decoration: none;
+}

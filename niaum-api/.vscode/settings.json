@@ -1,0 +1,11 @@
+{
+  "editor.formatOnSave": true,
+  "ruby.format": "rubocop",
+  "files.exclude": {
+    "public/**": true,
+    "data/schema.json": true
+  },
+  "ruby.useLanguageServer": true,
+  "ruby.intellisense": false,
+  "solargraph.autoformat": true,
+}

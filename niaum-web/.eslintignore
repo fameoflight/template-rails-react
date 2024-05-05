@@ -1,0 +1,8 @@
+node_modules
+packages/fragments/src/**
+data/**
+scripts/*
+**/.next
+**/dist
+**/build
+**/tsconfig.tsbuildinfo

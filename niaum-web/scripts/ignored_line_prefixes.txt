@@ -1,0 +1,17 @@
+Failed to parse source map from '/Users/hemantv/workspace/stable/stable-web/node_modules/antd-colorpicker/src/index.tsx' file: Error: ENOENT
+Failed to parse source map from '/Users/hemantv/workspace/stable/stable-web/node_modules/antd-colorpicker/src/components/Colorpicker.tsx'
+Failed to parse source map from '/Users/hemantv/workspace/stable/stable-web/node_modules/html2pdf.js
+(10:3) Nested CSS was detected, but CSS nesting has not been configured correctly.
+Please enable a CSS nesting plugin *before* Tailwind in your configuration.
+See how here: https://tailwindcss.com/docs/using-with-preprocessors#nesting
+WARNING in ../../node_modules/antd-colorpicker/dist/esm/components/Colorpicker.js
+Module Warning (from ../../node_modules/source-map-loader/dist/cjs.js):
+Module Warning (from ../../node_modules/source-map-loader/dist/cjs.js):
+WARNING in ../../node_modules/antd-colorpicker/dist/esm/index.js
+Module Warning (from ../../node_modules/source-map-loader/dist/cjs.js):
+WARNING in ../../node_modules/html2pdf.js/dist/html2pdf.js
+Module Warning (from ../../node_modules/react-scripts/node_modules/postcss-loader/dist/cjs.js):
+warn  - ../../node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js?
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy
+<w> [webpack.cache.PackFileCacheStrategy]
+../../node_modules/next/dist/build/webpack/

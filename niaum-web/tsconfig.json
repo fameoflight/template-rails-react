@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "noImplicitAny": false,
+    "jsx": "react-jsx",
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "packages/fragments"
+    },
+    {
+      "path": "packages/shared"
+    },
+    {
+      "path": "packages/webapp"
+    }
+  ],
+}

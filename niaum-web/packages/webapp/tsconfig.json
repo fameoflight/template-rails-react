@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": false,
+    "baseUrl": ".",
+    "isolatedModules": true,
+    "outDir": "dist",
+  },
+  "include": [
+    "src",
+    "../__types__",
+    "../shared",
+    "vite.config.ts"
+  ],
+  "references": [
+    {
+      "path": "../shared"
+    },
+    {
+      "path": "../fragments"
+    }
+  ]
+}

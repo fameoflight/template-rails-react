@@ -1,0 +1,24 @@
+{
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "semi": true,
+  "singleQuote": true,
+  "arrowParens": "always",
+  "importOrder": [
+    "^react|^relay",
+    "^next",
+    "^@picasso/fragments",
+    "^@picasso/shared",
+    "^lodash|^src/utils",
+    "(antd|@ant-design)|@/*",
+    "<THIRD_PARTY_MODULES>",
+    "^src/lib",
+    "src/Common/(.*)$",
+    "src/Hub/(.*)$",
+    "src/(.*)$",
+    ".*[^css]$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}

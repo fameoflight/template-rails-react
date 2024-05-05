@@ -1,0 +1,61 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.googleapis.com/oauth2/v1/userinfo?access_token=ya29.a0AXooCgufiR82V_ln0s76irqlqrJLBGciOOONFpud2WLTj8ifSMp6nessJJPqiv0NUHcCNE9A0MI7o9INcWitewXntOCZxqSEX-90pC5opJurwpRY_y186eKHgmA-lYtv8YTTLVhvU181-aqJuH38dgUgzeDIJJvc0AaCgYKATgSARISFQHGX2MiyEdq2x7yANyUQzxaY6jWmg0169&alt=json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Expires:
+      - Mon, 01 Jan 1990 00:00:00 GMT
+      Date:
+      - Sun, 05 May 2024 07:33:26 GMT
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Pragma:
+      - no-cache
+      Content-Type:
+      - application/json; charset=UTF-8
+      Vary:
+      - Origin
+      - Referer
+      - X-Origin
+      Server:
+      - ESF
+      X-Xss-Protection:
+      - '0'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Content-Type-Options:
+      - nosniff
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "118186764549767722209",
+          "email": "fameoflight@gmail.com",
+          "verified_email": true,
+          "name": "Hemant Verma",
+          "given_name": "Hemant",
+          "family_name": "Verma",
+          "picture": "https://lh3.googleusercontent.com/a/ACg8ocI6rZh81FdwoldMMO_0ov-tL-N06tmDSW7YVVzrgD3_d5h01I8GsA=s96-c",
+          "locale": "en"
+        }
+  recorded_at: Sun, 05 May 2024 07:33:26 GMT
+recorded_with: VCR 6.2.0

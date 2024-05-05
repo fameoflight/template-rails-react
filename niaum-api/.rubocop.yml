@@ -1,0 +1,83 @@
+require:
+  - rubocop-rails
+  - rubocop-performance
+  - rubocop-graphql
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - "db/schema.rb"
+    - "db/seeds.rb"
+    - "bin/*"
+
+Style/SoleNestedConditional:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 32
+
+Metrics/MethodLength:
+  Max: 32
+
+Metrics/ModuleLength:
+  Max: 128
+
+Metrics/CyclomaticComplexity:
+  Max: 16
+
+Metrics/PerceivedComplexity:
+  Max: 16
+
+Metrics/ClassLength:
+  Max: 128
+
+Layout/LineLength:
+  Max: 128
+  AllowedPatterns: ['\A#']
+
+Metrics/BlockLength:
+  Max: 32
+  AllowedMethods: ["describe", "context"]
+
+Style/Documentation:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+GraphQL/FieldDescription:
+  Enabled: false
+
+GraphQL/ObjectDescription:
+  Enabled: false
+
+GraphQL/ArgumentDescription:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 32
+
+RSpec/MultipleExpectations:
+  Max: 16
+
+Performance/MapCompact:
+  Enabled: false
+
+GraphQL/ExtractInputType:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+Style/IfInsideElse:
+  Enabled: false
+
+Style/ArgumentsForwarding:
+  Enabled: false
+
+GraphQL/ExtractType:
+  Enabled: false

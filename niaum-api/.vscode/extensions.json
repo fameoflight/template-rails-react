@@ -1,0 +1,20 @@
+{
+  "recommendations": [
+    "sorbet.sorbet-vscode-extension",
+    "sourcegraph.sourcegraph",
+    "wingrunr21.vscode-ruby",
+    "wayou.vscode-todo-highlight",
+    "misogi.ruby-rubocop",
+    "castwide.solargraph",
+    "esbenp.prettier-vscode",
+    "github.copilot",
+    "github.copilot-labs",
+    "shopify.ruby-lsp",
+    "balmor.behave",
+    "aaron-bond.better-comments",
+    "jbockle.jbockle-format-files",
+    "donjayamanne.githistory",
+    "rebornix.ruby",
+    "Thadeu.vscode-run-rspec-file"
+  ]
+}

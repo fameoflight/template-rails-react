@@ -1,0 +1,35 @@
+# dependencies
+node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+build
+packages/shared/dist
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+__generated__
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.vscode/configurationCache.log
+.vscode/dryrun.log
+.vscode/targets.log
+*.tsbuildinfo
+packages/webapp/dist
+packages/fragments/src
+packages/home/public/robots.txt
+packages/home/public/sitemap-0.xml
+packages/home/public/sitemap.xml
+packages/fragments/dist
+packages/home/public/shared
+packages/webapp/public/shared

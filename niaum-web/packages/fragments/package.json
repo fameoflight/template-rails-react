@@ -1,0 +1,7 @@
+{
+  "name": "@picasso/fragments",
+  "version": "0.0.1",
+  "main": "index.tsx",
+  "private": true,
+  "dependencies": {}
+}

@@ -1,0 +1,21 @@
+{
+  "files.exclude": {
+    "**/build": true,
+    "**/node_modules": true,
+    "**/coverage": true,
+    "**/.next": true,
+    "**/.swc": true,
+    "**/dist": true,
+    "**/tsconfig.tsbuildinfo": true,
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnSave": true,
+  "eslint.format.enable": true,
+  "files.autoSave": "onFocusChange",
+  "search.useIgnoreFiles": false,
+}
