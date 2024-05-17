@@ -33,18 +33,7 @@ const brandedNavBarQuery = graphql`
   }
 `;
 
-const userNavigation = [
-  {
-    name: 'Your Profile',
-    href: '/auth/update',
-    colorClass: 'text-gray-600',
-  },
-  {
-    name: 'Sign out',
-    href: '/auth/signout',
-    colorClass: 'text-gray-600',
-  },
-];
+
 
 type NavigationItem = {
   name: string;
@@ -94,6 +83,19 @@ function BrandedNavBar(props: IBrandedNavBarProps) {
   }
 
   const className = props.className || (isOverlay ? 'pb-32' : 'pb-1');
+
+  const userNavigation = [
+    {
+      name: 'Your Profile',
+      href: '/auth/update',
+      colorClass: 'text-gray-600',
+    },
+    {
+      name: 'Sign out',
+      href: '/auth/signout',
+      colorClass: 'text-gray-600',
+    },
+  ];
 
   if (user?.spoof) {
     userNavigation.push({

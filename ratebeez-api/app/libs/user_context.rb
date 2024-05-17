@@ -3,7 +3,7 @@
 class UserContext
   SUPER_USER_EMAILS = %w[fameoflight@gmail.com].freeze
 
-  attr_reader :user
+  attr_reader :user, :super_user
 
   def initialize(init_user)
     @user = init_user

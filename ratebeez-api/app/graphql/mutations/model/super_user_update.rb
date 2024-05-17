@@ -31,7 +31,7 @@ module Mutations
             { user: real_user }, update: { spoof_user: spoof }
           )
         else
-          user_context.super_user.update!(spoof_user: nil)
+          user_context.super_user&.update!(spoof_user: nil)
         end
 
         {
