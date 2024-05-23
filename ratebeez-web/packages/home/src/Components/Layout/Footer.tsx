@@ -2,6 +2,11 @@ import React from 'react';
 
 import Link from 'src/Components/Link';
 
+type LinkItem = {
+  name: string;
+  href: string;
+};
+
 const navigation = {
   left: [
     {
@@ -22,13 +27,7 @@ const navigation = {
   right: [
     {
       name: 'Resources',
-      links: [
-        { name: 'Auditors', href: '/auditors' },
-        {
-          name: 'Self Assessments',
-          href: '/assessments',
-        },
-      ],
+      links: [],
     },
   ],
   social: [
@@ -124,7 +123,7 @@ export default function Example() {
                   {section.name}
                 </h3>
                 <div role="list" className="mt-4 space-y-4">
-                  {section.links.map((item) => (
+                  {section.links.map((item: LinkItem) => (
                     <div key={item.name}>
                       <Link
                         to={item.href}
@@ -156,7 +155,7 @@ export default function Example() {
             ))}
           </div>
           <p className="mt-8 text-base text-gray-400 md:mt-0 md:order-1">
-            &copy; 2022 Picasso, Inc. All rights reserved.
+            &copy; 2024 Picasso, Inc. All rights reserved.
           </p>
         </div>
       </div>

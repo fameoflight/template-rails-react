@@ -21,13 +21,11 @@ const blogPageQuery = graphql`
     currentUser {
       id
     }
-    home {
-      blogPosts {
-        id
-        shortId
-        status
-        ...PostSummary_record
-      }
+    blogPosts(status: published) {
+      id
+      shortId
+      status
+      ...PostSummary_record
     }
   }
 `;
@@ -37,10 +35,7 @@ type blogNextPage = RelayNextPage<blogQuery>;
 function blogPage(props: blogNextPage['props']) {
   const data = usePreloadedQueryCompat(blogPageQuery, props, 'query');
 
-  const posts = _.filter(
-    data.home.blogPosts,
-    (post) => post.status === 'published'
-  );
+  const posts = _.filter(data.blogPosts, (post) => post.status === 'published');
 
   return (
     <Layout title="Blog">

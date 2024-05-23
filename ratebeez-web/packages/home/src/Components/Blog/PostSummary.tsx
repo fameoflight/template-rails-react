@@ -14,13 +14,7 @@ const fragmentSpec = graphql`
     id
     title
     shortId
-    summary
     publishedAt
-    category {
-      id
-      name
-      color
-    }
   }
 `;
 
@@ -38,7 +32,7 @@ function PostSummary(props: IPostSummaryProps) {
       key={post.id}
       className="flex flex-col overflow-hidden shadow p-6 bg-white"
     >
-      <div className="flex-1">
+      {/* <div className="flex-1">
         <Tag className="text-sm font-medium" color={post.category.color}>
           {post.category.name}
         </Tag>
@@ -49,7 +43,7 @@ function PostSummary(props: IPostSummaryProps) {
             {post.summary}
           </p>
         </Link>
-      </div>
+      </div> */}
 
       <div className="mt-3">
         <Link

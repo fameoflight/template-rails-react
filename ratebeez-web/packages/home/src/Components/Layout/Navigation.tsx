@@ -11,7 +11,7 @@ import TailwindButton from '@picasso/shared/src/Components/TailwindButton';
 import { useNetworkLazyLoadQuery } from '@picasso/shared/src/relay/hooks';
 
 import { Popover, Transition } from '@headlessui/react';
-import { Bars4Icon, XMarkIcon } from '@heroicons/react/24/outline/esm/index.js';
+import { Bars4Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 import Link from 'src/Components/Link';
 

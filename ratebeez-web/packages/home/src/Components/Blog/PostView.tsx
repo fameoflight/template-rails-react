@@ -15,16 +15,10 @@ const fragmentSpec = graphql`
   fragment PostView_record on BlogPost {
     id
     title
-    summary
     publishedAt
-    category {
-      id
-      name
-    }
     richTextContent {
       content
       contentHtml
-      formatVersion
       format
     }
   }

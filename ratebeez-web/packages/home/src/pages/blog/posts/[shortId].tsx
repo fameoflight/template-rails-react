@@ -22,17 +22,15 @@ import { getStaticProps as getPosts } from 'src/pages/blog';
 
 const postPageQuery = graphql`
   query ShortIdPostQuery($shortId: String!) {
-    home {
-      blogPost(shortId: $shortId) {
-        id
-        title
-        tags
-        publishedAt
-        richTextContent {
-          contentHtml
-        }
-        ...PostView_record
+    blogPost(shortId: $shortId) {
+      id
+      title
+      tags
+      publishedAt
+      richTextContent {
+        contentHtml
       }
+      ...PostView_record
     }
   }
 `;

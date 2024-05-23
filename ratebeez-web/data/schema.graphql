@@ -50,6 +50,25 @@ type Attachment implements ModelInterface & Node {
   url: String
 }
 
+type BlogPost implements ModelInterface & Node {
+  comments: [Comment!]!
+  createdAt: ISO8601DateTime!
+  id: ID!
+  modelId: Int!
+  publishedAt: ISO8601DateTime
+  richTextContent: RichTextJson!
+  shortId: String!
+  status: BlogPostStatusEnum!
+  tags: [String!]!
+  title: String!
+  updatedAt: ISO8601DateTime!
+}
+
+enum BlogPostStatusEnum {
+  draft
+  published
+}
+
 type Comment implements ModelInterface & Node {
   createdAt: ISO8601DateTime!
   discardedAt: ISO8601DateTime
@@ -272,6 +291,8 @@ interface Node {
 }
 
 type Query {
+  blogPost(shortId: String!): BlogPost
+  blogPosts(status: blogPostsStatusEnum!): [BlogPost!]!
   currentUser: User
   customNode(name: String!, id: ID!): Node
   env: String!
@@ -406,4 +427,10 @@ type VersionChange {
   label: String!
   newValue: String
   previousValue: String
+}
+
+enum blogPostsStatusEnum {
+  all
+  draft
+  published
 }

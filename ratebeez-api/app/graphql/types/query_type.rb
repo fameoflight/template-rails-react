@@ -18,6 +18,10 @@ module Types
       enum_argument :status, values: %i[all draft published], required: true
     end
 
+    field :blog_post, Types::Model::BlogPostType, null: true do
+      argument :short_id, String, required: true
+    end
+
     def env
       Rails.env
     end
@@ -40,6 +44,10 @@ module Types
       else
         BlogPost.where(status:)
       end
+    end
+
+    def blog_post(short_id:)
+      BlogPost.find_by(short_id:)
     end
   end
 end
