@@ -1,0 +1,31 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "typeRoots": [
+      "src/__types__"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "target": "es5",
+    "incremental": true,
+  },
+  "include": [
+    "next-env.d.ts",
+    "src",
+    "../__types__",
+  ],
+  "references": [
+    {
+      "path": "../shared"
+    },
+    {
+      "path": "../fragments"
+    }
+  ]
+}

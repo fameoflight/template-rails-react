@@ -1,0 +1,6 @@
+@import '@picasso/shared/css/index.css';
+
+
+#__next {
+  min-height: 100%;
+}
