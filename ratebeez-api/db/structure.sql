@@ -209,22 +209,62 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: blog_posts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.blog_posts (
+    id bigint NOT NULL,
+    short_id public.citext NOT NULL,
+    title character varying NOT NULL,
+    rich_text_content jsonb DEFAULT '{}'::jsonb NOT NULL,
+    tags character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    status public.citext DEFAULT 'draft'::public.citext NOT NULL,
+    published_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: blog_posts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.blog_posts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: blog_posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.blog_posts_id_seq OWNED BY public.blog_posts.id;
+
+
+--
 -- Name: carriers; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.carriers (
     id bigint NOT NULL,
-    usdot character varying NOT NULL,
-    mc_number character varying,
-    legal_name character varying,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    dot_number character varying NOT NULL,
+    legal_name character varying NOT NULL,
     dba_name character varying,
-    physical_address jsonb NOT NULL,
-    mailing_address jsonb NOT NULL,
+    city character varying,
+    state character varying,
+    physical_address jsonb,
+    mailing_address jsonb,
     phone character varying,
     fax character varying,
     email character varying,
     mcs_data jsonb DEFAULT '{}'::jsonb NOT NULL,
     num_drivers integer,
+    csv_raw jsonb,
+    snapshot_page text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -588,6 +628,43 @@ ALTER SEQUENCE public.versions_id_seq OWNED BY public.versions.id;
 
 
 --
+-- Name: webpages; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.webpages (
+    id bigint NOT NULL,
+    key public.citext NOT NULL,
+    url character varying NOT NULL,
+    base_url character varying NOT NULL,
+    body text,
+    extra jsonb DEFAULT '{}'::jsonb NOT NULL,
+    status integer DEFAULT 0 NOT NULL,
+    user_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: webpages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.webpages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: webpages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.webpages_id_seq OWNED BY public.webpages.id;
+
+
+--
 -- Name: active_storage_attachments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -613,6 +690,13 @@ ALTER TABLE ONLY public.active_storage_variant_records ALTER COLUMN id SET DEFAU
 --
 
 ALTER TABLE ONLY public.api_access_tokens ALTER COLUMN id SET DEFAULT nextval('public.api_access_tokens_id_seq'::regclass);
+
+
+--
+-- Name: blog_posts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.blog_posts ALTER COLUMN id SET DEFAULT nextval('public.blog_posts_id_seq'::regclass);
 
 
 --
@@ -665,6 +749,13 @@ ALTER TABLE ONLY public.versions ALTER COLUMN id SET DEFAULT nextval('public.ver
 
 
 --
+-- Name: webpages id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.webpages ALTER COLUMN id SET DEFAULT nextval('public.webpages_id_seq'::regclass);
+
+
+--
 -- Name: active_storage_attachments active_storage_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -702,6 +793,14 @@ ALTER TABLE ONLY public.api_access_tokens
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: blog_posts blog_posts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.blog_posts
+    ADD CONSTRAINT blog_posts_pkey PRIMARY KEY (id);
 
 
 --
@@ -809,6 +908,14 @@ ALTER TABLE ONLY public.versions
 
 
 --
+-- Name: webpages webpages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.webpages
+    ADD CONSTRAINT webpages_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: index_active_storage_attachments_on_blob_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -858,17 +965,31 @@ CREATE INDEX index_api_access_tokens_on_user_id ON public.api_access_tokens USIN
 
 
 --
--- Name: index_carriers_on_mc_number; Type: INDEX; Schema: public; Owner: -
+-- Name: index_blog_posts_on_short_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_carriers_on_mc_number ON public.carriers USING btree (mc_number) WHERE (mc_number IS NOT NULL);
+CREATE UNIQUE INDEX index_blog_posts_on_short_id ON public.blog_posts USING btree (short_id);
 
 
 --
--- Name: index_carriers_on_usdot; Type: INDEX; Schema: public; Owner: -
+-- Name: index_blog_posts_on_status; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_carriers_on_usdot ON public.carriers USING btree (usdot);
+CREATE INDEX index_blog_posts_on_status ON public.blog_posts USING btree (status);
+
+
+--
+-- Name: index_blog_posts_on_tags; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_blog_posts_on_tags ON public.blog_posts USING gin (tags);
+
+
+--
+-- Name: index_carriers_on_dot_number; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_carriers_on_dot_number ON public.carriers USING btree (dot_number);
 
 
 --
@@ -1075,6 +1196,27 @@ CREATE INDEX index_versions_on_user_id ON public.versions USING btree (user_id);
 
 
 --
+-- Name: index_webpages_on_base_url; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_webpages_on_base_url ON public.webpages USING btree (base_url);
+
+
+--
+-- Name: index_webpages_on_url; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_webpages_on_url ON public.webpages USING btree (url);
+
+
+--
+-- Name: index_webpages_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_webpages_on_user_id ON public.webpages USING btree (user_id);
+
+
+--
 -- Name: comments fk_rails_03de2dc08c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1131,6 +1273,14 @@ ALTER TABLE ONLY public.api_access_tokens
 
 
 --
+-- Name: webpages fk_rails_f86dfde923; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.webpages
+    ADD CONSTRAINT fk_rails_f86dfde923 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -1150,6 +1300,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240503063410'),
 ('20240507175250'),
 ('20240508024705'),
-('20240509064140');
+('20240508180307'),
+('20240509064140'),
+('20240523190726');
 
 

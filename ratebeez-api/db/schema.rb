@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_09_064140) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_23_190726) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "hstore"
@@ -63,6 +63,41 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_09_064140) do
     t.index ["discarded_at"], name: "index_api_access_tokens_on_discarded_at"
     t.index ["token"], name: "index_api_access_tokens_on_token", unique: true
     t.index ["user_id"], name: "index_api_access_tokens_on_user_id"
+  end
+
+  create_table "blog_posts", force: :cascade do |t|
+    t.citext "short_id", null: false
+    t.string "title", null: false
+    t.jsonb "rich_text_content", default: {}, null: false
+    t.string "tags", default: [], null: false, array: true
+    t.citext "status", default: "draft", null: false
+    t.datetime "published_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["short_id"], name: "index_blog_posts_on_short_id", unique: true
+    t.index ["status"], name: "index_blog_posts_on_status"
+    t.index ["tags"], name: "index_blog_posts_on_tags", using: :gin
+  end
+
+  create_table "carriers", force: :cascade do |t|
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.string "dot_number", null: false
+    t.string "legal_name", null: false
+    t.string "dba_name"
+    t.string "city"
+    t.string "state"
+    t.jsonb "physical_address"
+    t.jsonb "mailing_address"
+    t.string "phone"
+    t.string "fax"
+    t.string "email"
+    t.jsonb "mcs_data", default: {}, null: false
+    t.integer "num_drivers"
+    t.jsonb "csv_raw"
+    t.text "snapshot_page"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dot_number"], name: "index_carriers_on_dot_number", unique: true
   end
 
   create_table "comments", force: :cascade do |t|
@@ -243,6 +278,21 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_09_064140) do
     t.index ["user_id"], name: "index_versions_on_user_id"
   end
 
+  create_table "webpages", force: :cascade do |t|
+    t.citext "key", null: false
+    t.string "url", null: false
+    t.string "base_url", null: false
+    t.text "body"
+    t.jsonb "extra", default: {}, null: false
+    t.integer "status", default: 0, null: false
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["base_url"], name: "index_webpages_on_base_url"
+    t.index ["url"], name: "index_webpages_on_url"
+    t.index ["user_id"], name: "index_webpages_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "api_access_tokens", "users"
@@ -250,4 +300,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_09_064140) do
   add_foreign_key "super_users", "users"
   add_foreign_key "super_users", "users", column: "spoof_user_id"
   add_foreign_key "versions", "users"
+  add_foreign_key "webpages", "users"
 end

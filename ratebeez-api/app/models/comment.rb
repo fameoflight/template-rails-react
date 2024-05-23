@@ -36,6 +36,8 @@ class Comment < ApplicationRecord
 
   before_save :sanitize_tags
 
+  validates :commentable_type, inclusion: { in: ['BlogPost'] }
+
   def sanitize_tags
     self.tags = tags.map(&:downcase)
   end

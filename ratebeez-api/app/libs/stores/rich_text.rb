@@ -12,5 +12,15 @@ module Stores
     delegate :blank?, to: :content
 
     delegate :present?, to: :content
+
+    # validate content is a valid JSON string
+
+    validate :content_is_json
+
+    def content_is_json
+      JSON.parse(content)
+    rescue JSON::ParserError
+      errors.add(:content, 'is not a valid JSON string')
+    end
   end
 end

@@ -36,9 +36,6 @@ class ApiAccessToken < ApplicationRecord
 
   before_create :create_token
 
-  # TODO: placeholder for testing
-  has_many :comments, as: :commentable, dependent: :destroy # remove when not needed
-
   def create_token
     return if token.present?
 

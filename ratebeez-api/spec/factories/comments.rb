@@ -25,9 +25,9 @@
 #
 FactoryBot.define do
   factory :comment do
-    association :commentable, factory: :api_access_token
+    association :commentable, factory: :blog_post
     association :user
-    rich_text_content { { content: 'This is a comment', format: 'plain' } }
+    rich_text_content { { content: '{}', format: 'plain' } }
     tags { %w[tag1 tag2] }
     rating { 5 }
   end

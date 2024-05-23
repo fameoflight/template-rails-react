@@ -14,6 +14,10 @@ module Types
 
     field :super_user, Types::Model::SuperUserType, null: false
 
+    field :blog_posts, [Types::Model::BlogPostType], null: false do
+      enum_argument :status, values: %i[all draft published], required: true
+    end
+
     def env
       Rails.env
     end
@@ -28,6 +32,14 @@ module Types
 
     def super_user
       user_context&.current_user
+    end
+
+    def blog_posts(status:)
+      if status == 'all'
+        BlogPost.all
+      else
+        BlogPost.where(status:)
+      end
     end
   end
 end

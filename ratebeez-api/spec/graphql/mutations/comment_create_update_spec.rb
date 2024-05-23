@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Mutations::Model::CommentCreateUpdate, type: :graphql do
-
   def execute_query(input, user)
     variables = { input: }
 
@@ -15,13 +14,13 @@ RSpec.describe Mutations::Model::CommentCreateUpdate, type: :graphql do
   it 'create' do
     user = create(:user)
 
-    api_access_token = create(:api_access_token, user: user)
+    blog_post = create(:blog_post)
 
     input = {
-      commentableId: graphql_id(api_access_token, Types::Model::ApiAccessTokenType),
+      commentableId: graphql_id(blog_post, Types::Model::BlogPostType),
       tags: [],
       rating: 5,
-      richTextContent: { content: 'Test', format: 'plain' }
+      richTextContent: { content: '{}', format: 'plain' }
     }
 
     resp = execute_query(input, user)
@@ -30,10 +29,10 @@ RSpec.describe Mutations::Model::CommentCreateUpdate, type: :graphql do
 
     comment = Comment.last
 
-    expect(comment.rich_text_content[:content]).to eq('Test')
+    expect(comment.rich_text_content[:content]).to eq('{}')
 
     expect(comment.user).to eq(user)
 
-    expect(comment.commentable).to eq(api_access_token)
+    expect(comment.commentable).to eq(blog_post)
   end
 end
