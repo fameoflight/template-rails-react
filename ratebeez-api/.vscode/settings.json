@@ -4,7 +4,7 @@
     "public/**": true,
     "data/schema.json": true
   },
-  "ruby.intellisense": false,
+  "ruby.intellisense": "rubyLocate",
   "solargraph.autoformat": true,
   "ruby.useBundler": true, //run non-lint commands with bundle exec
   "ruby.useLanguageServer": true, // use the internal language server (see below)
