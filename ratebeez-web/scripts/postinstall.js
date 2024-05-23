@@ -28,6 +28,7 @@ var copyRecursiveSync = function (src, dest) {
 };
 
 const copyDirectory = [
+  ['packages/shared/public', 'packages/home/public/shared'],
   ['packages/shared/public', 'packages/webapp/public/shared'],
 ];
 
