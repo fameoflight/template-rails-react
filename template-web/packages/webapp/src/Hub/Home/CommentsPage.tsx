@@ -9,8 +9,6 @@ import {
   useNetworkLazyReloadQuery,
 } from '@picasso/shared/src/relay/hooks';
 
-import { useParams } from 'react-router-dom';
-
 import _ from 'lodash';
 import CommentList from 'src/Hub/Home/Comment/CommentList';
 import CommentForm from 'src/Hub/Home/Comment/CommentForm';

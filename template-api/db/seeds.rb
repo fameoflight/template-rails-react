@@ -8,10 +8,14 @@
 
 
 if User.find_by(email: 'admin@test.com').nil?
-  User.create!(
-    email: 'admin@test.com',
-    password: 'testtest',
-  )
+  if Rails.env.development?
+    User.create!(
+      name: 'Admin User',
+      email: 'admin@test.com',
+      password: 'testtest',
+      confirmed_at: Time.zone.now
+    )
 
-  puts 'Admin user created'
+    puts 'Admin user created'
+  end
 end

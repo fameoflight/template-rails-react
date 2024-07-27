@@ -5,7 +5,7 @@ import { Button, ButtonProps, Dropdown, Menu, MenuProps } from 'antd';
 interface IDropdownButtonProps extends Omit<ButtonProps, 'onClick'> {
   children: React.ReactNode;
   onClick?: (key: string) => void;
-  values: { key: string; label: React.ReactNode }[];
+  values: { key: string; label: React.ReactNode; disabled?: boolean }[];
 }
 
 const DropdownButton = (props: IDropdownButtonProps) => {

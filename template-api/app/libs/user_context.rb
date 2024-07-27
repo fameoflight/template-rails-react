@@ -34,4 +34,24 @@ class UserContext
   def file_type_allowed?(_content_type)
     true
   end
+
+  def object_user(object)
+    return object.user if object.respond_to?(:user)
+
+    return User.find_by(id: object.user_id) if object.respond_to?(:user_id)
+
+    nil
+  end
+
+  def can_destroy?(object)
+    # check if object has user_id or respond to user
+
+    return true if object_user(object).nil?
+
+    return true if object_user(object)&.id == @user&.id
+
+    return true if @super_user.present?
+
+    false
+  end
 end

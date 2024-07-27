@@ -19,14 +19,56 @@ import {
 } from 'relay-runtime';
 import { PayloadError } from 'relay-runtime';
 
+import { ConcreteRequest, RequestParameters } from 'relay-runtime';
+
 import _ from 'lodash';
 
 import { notification } from 'antd';
 
 import useFetchKey from '../hooks/useFetchKey';
 import createRelayEnvironment from './createRelayEnvironment';
+import { fetchQuery } from '@picasso/shared/src/relay/networkLayer';
 
 import { findAllByKey } from '../utils';
+
+export type PartialPreloadedQuery<TQuery extends OperationType> = {
+  hash: string;
+  params: RequestParameters;
+  variables: TQuery['variables'];
+  data: Awaited<TQuery['response']>;
+};
+
+export async function getPreloadedQuery<TQuery extends OperationType>(
+  queryRequest: ConcreteRequest,
+  variables?: VariablesOf<TQuery>
+): Promise<PartialPreloadedQuery<TQuery>> {
+  const query = queryRequest.params.text;
+
+  if (!query) {
+    throw new Error('Query  is missing');
+  }
+
+  const response = await fetchQuery({
+    operation: queryRequest.params,
+    networkLayer: {
+      kind: 'browser',
+      endpoint: '/api/internal/graphql',
+      format: 'msgpack',
+      gracefulFailure: false,
+    },
+    variables: variables || {},
+    cacheConfig: {
+      force: true,
+    },
+  });
+
+  return {
+    hash: query,
+    params: queryRequest.params,
+    variables: variables || {},
+    data: response.data as Awaited<TQuery['response']>,
+  };
+}
 
 const openNotificationWithIcon = (description: string | React.ReactNode) => {
   notification.error({
