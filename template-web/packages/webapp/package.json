@@ -1,0 +1,61 @@
+{
+  "name": "@picasso/webapp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "overrides": {
+    "react": "$react",
+    "react-dom": "$react-dom"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@headlessui/react": "^1.7.3",
+    "@heroicons/react": "^2.0.12",
+    "@picasso/fragments": "^0.0.1",
+    "@picasso/shared": "^0.0.1",
+    "@rails/activestorage": "7.1.3",
+    "@react-oauth/google": "^0.12.1",
+    "antd": "^4.23.5",
+    "antd-colorpicker": "^1.0.0",
+    "antd-password-input-strength": "^2.0.1",
+    "array-move": "^4.0.0",
+    "history": "^5.3.0",
+    "html2pdf.js": "^0.10.1",
+    "is-hotkey": "^0.2.0",
+    "j-toker": "0.0.10-beta3",
+    "lexical": "^0.5.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "papaparse": "^5.4.1",
+    "rc-select": "^14.1.13",
+    "react": "^18.2.0",
+    "react-base-table": "^1.13.5",
+    "react-copy-to-clipboard": "^5.1.0",
+    "react-dom": "^18.2.0",
+    "react-plaid-link": "^3.3.2",
+    "react-relay": "^16.2.0",
+    "react-router-dom": "^6.4.2",
+    "react-signature-canvas": "^1.0.6",
+    "react-sortable-hoc": "^2.0.0",
+    "relay-runtime": "^16.2.0"
+  },
+  "devDependencies": {
+    "@types/papaparse": "^5.3.14"
+  }
+}

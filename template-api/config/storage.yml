@@ -1,0 +1,15 @@
+test:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
+
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+backblaze:
+  service: S3
+  access_key_id: <%= Rails.application.credentials.dig(:backblaze, :access_key_id) %>
+  secret_access_key: <%= Rails.application.credentials.dig(:backblaze, :secret_access_key) %>
+  region: us-west-004 # example: us-east-001
+  bucket: usepicasso
+  endpoint: https://s3.us-west-004.backblazeb2.com

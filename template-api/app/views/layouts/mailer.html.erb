@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        html {
+          padding: 1em;
+          margin: auto;
+          line-height: 1.25;
+          font-family: sans-serif;
+        }
+
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+
+        th, td {
+          padding: 8px;
+          text-align: left;
+        }
+
+       .blockquote {
+          font: 12px normal helvetica, sans-serif;
+          margin: 12px 0px;
+          padding-left: 12px;
+          background-color:hsl(210,70%,96%);
+          border: solid hsl(210,70%,90%);
+          border-left:4px solid hsl(210,70%,50%);
+          padding:1px 12px;
+        }
+
+      .alert {
+        border-radius: 0.25rem;
+        padding: 1rem;
+        margin: 0.5rem 0;
+        background-color: #f7f7f7;
+      }
+
+      .alert-title {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      .alert-warning {
+        background-color: #fff3cd;
+      }
+
+      .alert-info {
+        background-color: #eeeeee;
+      }
+
+      .alert-error {
+        background-color: #f8d7da;
+      }
+
+      .border {
+        border: 1px solid #dee2e6;
+      }
+
+    </style>
+  </head>
+  <body>
+    <%= yield %>
+
+    <p>
+      <div class="border"></div>
+    </p>
+
+    <p>
+      Thanks,<br />
+      Picasso Team
+    </p>
+  </body>
+</html>
