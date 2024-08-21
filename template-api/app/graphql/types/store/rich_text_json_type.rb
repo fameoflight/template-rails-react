@@ -6,7 +6,7 @@ module Types
       field :content, String, null: true
       field :content_html, String, null: true
 
-      enum_field :format, values: %w[lexical plain]
+      enum_field :format, values: Stores::RichText::FORMATS
     end
   end
 end

@@ -2,7 +2,7 @@
 
 module Helpers
   module PostgresModelHelpers
-    RICH_TEXT_PREFIX = 'rich_text_'
+    RICH_TEXT_PREFIX = %i[rich_text_ rt_].freeze
 
     extend ActiveSupport::Concern
 
@@ -23,13 +23,19 @@ module Helpers
         @field_name = value.to_s.split('::').last.underscore.to_sym if field_name.nil?
       end
 
+      def rich_text_column?(column_name)
+        RICH_TEXT_PREFIX.any? do |prefix|
+          column_name.to_s.start_with?(prefix.to_s)
+        end
+      end
+
       def expose_model_column_fields(columns, null: nil)
         enum_fields = _model_enum_fields_
 
         _internal_expose_model_column_(model, columns) do |column_name, column_type, column|
           column_null = null.nil? ? column.null : null
 
-          if column_name.start_with? RICH_TEXT_PREFIX
+          if rich_text_column?(column_name)
             raise "#{RICH_TEXT_PREFIX} prefix is for rich text document" if column_type != GraphQL::Types::JSON
 
             field column_name, Types::Store::RichTextJsonType, null: column_null
@@ -57,7 +63,7 @@ module Helpers
         _internal_expose_model_column_(model, columns) do |column_name, column_type, column|
           argument_required = required.nil? ? !column.null : required
 
-          if column_name.start_with? RICH_TEXT_PREFIX
+          if rich_text_column?(column_name)
             raise "#{RICH_TEXT_PREFIX} prefix is for rich text document" if column_type != GraphQL::Types::JSON
 
             argument column_name, Types::Store::JsonInputType, required: argument_required

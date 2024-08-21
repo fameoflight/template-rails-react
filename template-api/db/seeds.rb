@@ -6,16 +6,15 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-
-if User.find_by(email: 'admin@test.com').nil?
-  if Rails.env.development?
-    User.create!(
+if Rails.env.development?
+  User.create_or_update_by!(
+    { email: 'admin@test.com' },
+    update: {
       name: 'Admin User',
-      email: 'admin@test.com',
       password: 'testtest',
       confirmed_at: Time.zone.now
-    )
+    }
+  )
 
-    puts 'Admin user created'
-  end
+  puts 'Admin user created'
 end

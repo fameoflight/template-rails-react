@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserContext
-  SUPER_USER_EMAILS = %w[fameoflight@gmail.com].freeze
+  SUPER_USER_EMAILS = %w[fameoflight@gmail.com admin@test.com].freeze
 
   attr_reader :user, :super_user
 

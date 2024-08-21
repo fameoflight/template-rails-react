@@ -22,11 +22,12 @@ RSpec.describe Types::Model::UserType, type: %i[graphql request] do
   end
 
   def execute_query(user)
-    context = { current_user: user }
-
     variables = { id: graphql_id(user, Types::Model::UserType) }
 
-    query_result = graphql_execute(query_string, context:, variables:, logging: true)
+    query_result = graphql_execute(query_string, user:, variables:, logging: true)
+
+    pp query_result if query_result['errors']
+
     query_result['data']['node']
   end
 

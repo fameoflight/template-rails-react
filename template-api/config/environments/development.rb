@@ -10,7 +10,7 @@ Rails.application.configure do
     Bullet.add_footer    = true
   end
 
-  config.good_job.execution_mode = 'inline'
+  config.good_job.execution_mode = 'async'
 
   # Settings specified here will take precedence over those in config/application.rb.
 

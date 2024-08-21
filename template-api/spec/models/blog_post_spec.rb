@@ -46,11 +46,11 @@ RSpec.describe BlogPost, type: :model do
   end
 
   describe 'rich_text_content' do
-    it 'validates content is a valid JSON string' do
+    it 'validates format is required' do
       blog_post = build(:blog_post, rich_text_content: { content: 'invalid' })
 
       expect(blog_post).not_to be_valid
-      expect(blog_post.errors[:rich_text_content]).to eq(['Content is not a valid JSON string'])
+      expect(blog_post.errors[:rich_text_content]).to eq(["Format can't be blank", 'Format is not included in the list'])
     end
   end
 

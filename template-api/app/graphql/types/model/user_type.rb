@@ -3,7 +3,13 @@
 module Types
   module Model
     class UserType < Types::BaseModelObject
-      implements Types::ModelAttachmentInterface # TODO: remove this when we have a model that is actually using it, this is just a placeholder
+      # implements Types::ModelAttachmentInterface # TODO: remove this when we have a model that is actually using it, this is just a placeholder
+
+      def self.authorized?(object, context)
+        user_context = context[:user_context]
+
+        (user_context.super? || user_context.user&.id == object.id) && super
+      end
 
       setup :user, fields: %i[name nickname confirmed_at]
 

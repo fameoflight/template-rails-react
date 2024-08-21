@@ -2,6 +2,8 @@
 
 module Mutations
   class CreateUpdateMutation < Mutations::ModelMutation
+    field :user, Types::Model::UserType, null: true
+
     def run(**kwargs)
       # TODO(hemantv): remove nil values from mutation_types
       # This is really dangerous when we really want to unset the value
@@ -43,12 +45,14 @@ module Mutations
         {
           success: true,
           field_name => object,
+          user: user_context.current_user,
           errors: []
         }
       else
         {
           success: false,
           field_name => nil,
+          user: user_context.current_user,
           errors: object.errors.full_messages
         }
       end

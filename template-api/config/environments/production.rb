@@ -89,14 +89,14 @@ Rails.application.configure do
   end
 
   config.logger = Logdna::Ruby.new(
-    Rails.application.credentials[:api][:production][:logdna], {
+    Rails.application.credentials[:logdna_token], {
       app: ENV.fetch('APP_NAME', 'unknown'),
       env: ENV.fetch('ENVIRONMENT', 'unknown')
     }
   )
 
   config.action_mailer.delivery_method = :postmark
-  config.action_mailer.postmark_settings = { api_token: Rails.application.credentials[:api][:production][:postmark] }
+  config.action_mailer.postmark_settings = { api_token: Rails.application.credentials.postmark_api_token }
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false

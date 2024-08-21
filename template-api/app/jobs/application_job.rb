@@ -7,12 +7,6 @@ class ApplicationJob < ActiveJob::Base
     total_limit: 5,
     enqueue_limit: 2,
     perform_limit: 1,
-    key: -> { concurrency_key(arguments.first) }
+    key: -> { "#{self.class}-#{SecureRandom.uuid}" }
   )
-
-  def self.concurrency_key(*_args)
-    # generate random key
-
-    "#{self.class}-#{SecureRandom.uuid}"
-  end
 end

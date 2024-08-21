@@ -35,7 +35,7 @@ module Services
     end
 
     def canny_key
-      Rails.application.credentials[:api][:production][:canny]
+      Rails.application.credentials[:canny_token]
     end
   end
 end

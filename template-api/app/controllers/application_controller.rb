@@ -15,7 +15,13 @@ class ApplicationController < ActionController::API
   before_action :set_paper_trail_whodunnit
 
   def user_context
-    @user_context ||= UserContext.new(current_user)
+    if @user_context.nil?
+      @user_context = UserContext.new(current_user)
+    else
+      @user_context = UserContext.new(current_user) if @user_context.current_user != current_user
+    end
+
+    @user_context
   end
 
   def info_for_paper_trail
@@ -24,8 +30,7 @@ class ApplicationController < ActionController::API
         ip: request.remote_ip,
         user_agent: request.user_agent
       },
-      user_id: user_context.real_user&.id,
-      current_user_id: user_context.current_user&.id
+      user_id: user_context.real_user&.id
     }
   end
 
@@ -34,10 +39,10 @@ class ApplicationController < ActionController::API
   def respond_with_format(result, status: :ok)
     respond_to do |format|
       format.msgpack do
-        render plain: result.to_msgpack, content_type: 'application/x-msgpack', status: status
+        render plain: result.to_msgpack, content_type: 'application/x-msgpack', status:
       end
       format.json do
-        render json: result, status: status
+        render json: result, status:
       end
     end
   end

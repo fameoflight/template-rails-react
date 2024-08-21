@@ -31,6 +31,12 @@ class ApplicationRecord < ActiveRecord::Base
       record
     end
 
+    def create_or_update_by(find_args, create: {}, update: {})
+      create_or_update_by!(find_args, create:, update:)
+    rescue ActiveRecord::RecordInvalid
+      nil
+    end
+
     def polymorphic_belongs_to(name, **kwargs)
       in_values = kwargs.delete(:in)
 
