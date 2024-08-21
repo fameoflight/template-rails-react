@@ -29,11 +29,10 @@ const brandedNavBarQuery = graphql`
         id
         url
       }
+      ...MobileUserMenu_user
     }
   }
 `;
-
-
 
 type NavigationItem = {
   name: string;
@@ -54,7 +53,7 @@ function BrandedNavBar(props: IBrandedNavBarProps) {
   const navigationItems = _.compact(props.navigationItems);
   const data = useNetworkLazyLoadQuery<BrandedNavBarQuery>(brandedNavBarQuery);
 
-  const user = data.currentUser;
+  const user = data.currentUser || null;
 
   const name = _.get(user, 'name', 'User') || 'User';
 
@@ -207,17 +206,6 @@ function BrandedNavBar(props: IBrandedNavBarProps) {
                         {item.name}
                       </Disclosure.Button>
                     ))}
-
-                    {user?.spoof && (
-                      <Disclosure.Button
-                        key="spoof"
-                        as="a"
-                        href="/auth/end-spoof"
-                        className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-picasso-primary-700 hover:bg-opacity-75"
-                      >
-                        End Spoof
-                      </Disclosure.Button>
-                    )}
                   </div>
                 </div>
               </Disclosure.Panel>

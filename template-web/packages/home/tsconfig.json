@@ -18,6 +18,8 @@
   "include": [
     "next-env.d.ts",
     "src",
+    "lib",
+    "magicui",
     "../__types__",
   ],
   "references": [

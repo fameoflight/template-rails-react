@@ -7,16 +7,22 @@ import { UserOutlined } from '@ant-design/icons';
 import { Menu, Transition } from '@headlessui/react';
 import { Avatar } from 'antd';
 
+import { useFragment, graphql } from 'react-relay/hooks';
+
+import { MobileUserMenu_user$key } from '@picasso/fragments/src/MobileUserMenu_user.graphql';
+
+const fragmentSpec = graphql`
+  fragment MobileUserMenu_user on User {
+    id
+    name
+    avatar {
+      url
+    }
+  }
+`;
+
 interface MobileUserMenuProps {
-  user?: {
-    readonly avatar?: {
-      readonly id: string;
-      readonly url?: string | null;
-    } | null;
-    readonly id: string;
-    readonly name?: string | null;
-    readonly spoof: boolean;
-  } | null;
+  user: MobileUserMenu_user$key | null;
   navigationItems: {
     name: string;
     href: string;
@@ -25,7 +31,7 @@ interface MobileUserMenuProps {
 }
 
 function MobileUserMenu(props: MobileUserMenuProps) {
-  const user = props.user;
+  const user = useFragment(fragmentSpec, props.user);
 
   if (user == null) {
     return null;

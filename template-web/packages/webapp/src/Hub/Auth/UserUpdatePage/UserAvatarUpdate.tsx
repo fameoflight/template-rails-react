@@ -11,6 +11,9 @@ import AvatarUploader from 'src/Common/Components/Uploaders/AvatarUploader';
 
 import userUpdate from 'src/Hub/Auth/UserUpdatePage/userUpdate';
 
+export const DEFAULT_USER_AVATAR_URL =
+  'https://uxwing.com/wp-content/themes/uxwing/download/peoples-avatars/man-user-color-icon.png';
+
 const fragmentSpec = graphql`
   fragment UserAvatarUpdate_user on User {
     id

@@ -1,8 +1,3 @@
-"""
-Requires that exactly one field must be supplied and that field must not be `null`.
-"""
-directive @oneOf on INPUT_OBJECT
-
 type ApiAccessToken implements CommentInterface & ModelInterface & Node {
   active: Boolean!
   commentCount: Int!
@@ -36,6 +31,7 @@ type ApiAccessTokenCreateUpdatePayload {
   """A unique identifier for the client performing the mutation."""
   clientMutationId: String
   errors: [String!]!
+  user: User
 }
 
 type Attachment implements ModelInterface & Node {
@@ -50,7 +46,8 @@ type Attachment implements ModelInterface & Node {
   url: String
 }
 
-type BlogPost implements ModelInterface & Node {
+type BlogPost implements ModelAttachmentInterface & ModelInterface & Node {
+  attachments: [ModelAttachment!]!
   comments: [Comment!]!
   createdAt: ISO8601DateTime!
   id: ID!
@@ -101,6 +98,7 @@ type CommentCreateUpdatePayload {
   clientMutationId: String
   comment: Comment
   errors: [String!]!
+  user: User
 }
 
 """An object with an ID."""
@@ -222,6 +220,7 @@ type ModelAttachmentCreateUpdatePayload {
   clientMutationId: String
   errors: [String!]!
   modelAttachment: ModelAttachment
+  user: User
 }
 
 """An object with an ID."""
@@ -319,8 +318,10 @@ type RichTextJson {
 }
 
 enum RichTextJsonFormatEnum {
-  lexical
   plain
+  markdown
+  html
+  lexical
 }
 
 """Untyped JSON Input used for Store Model"""
@@ -353,9 +354,8 @@ type SuperUserUpdatePayload {
   user: User
 }
 
-type User implements ModelAttachmentInterface & ModelInterface & Node {
+type User implements ModelInterface & Node {
   apiAccessTokens: [ApiAccessToken!]!
-  attachments: [ModelAttachment!]!
   avatar: Attachment
   cannyToken: String
   confirmedAt: ISO8601DateTime

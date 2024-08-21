@@ -8,6 +8,8 @@ module Types
     end
 
     class BlogPostType < Types::BaseModelObject
+      implements Types::ModelAttachmentInterface
+
       setup BlogPost, fields: %i[short_id title published_at tags]
 
       field :status, BlogPostStatusEnum, null: false

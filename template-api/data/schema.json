@@ -595,6 +595,11 @@
           "interfaces": [
             {
               "kind": "INTERFACE",
+              "name": "ModelAttachmentInterface",
+              "ofType": null
+            },
+            {
+              "kind": "INTERFACE",
               "name": "ModelInterface",
               "ofType": null
             },
@@ -606,6 +611,32 @@
           ],
           "possibleTypes": null,
           "fields": [
+            {
+              "name": "attachments",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "ModelAttachment",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null,
+              "args": [
+
+              ]
+            },
             {
               "name": "comments",
               "description": null,
@@ -2377,6 +2408,132 @@
         },
         {
           "kind": "INTERFACE",
+          "name": "ModelAttachmentInterface",
+          "description": "An object with an ID.",
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "ModelInterface",
+              "ofType": null
+            },
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
+          "possibleTypes": [
+            {
+              "kind": "OBJECT",
+              "name": "BlogPost",
+              "ofType": null
+            }
+          ],
+          "fields": [
+            {
+              "name": "attachments",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "ModelAttachment",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null,
+              "args": [
+
+              ]
+            },
+            {
+              "name": "createdAt",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ISO8601DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null,
+              "args": [
+
+              ]
+            },
+            {
+              "name": "id",
+              "description": "ID of the object.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null,
+              "args": [
+
+              ]
+            },
+            {
+              "name": "modelId",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null,
+              "args": [
+
+              ]
+            },
+            {
+              "name": "updatedAt",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ISO8601DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null,
+              "args": [
+
+              ]
+            }
+          ],
+          "inputFields": null,
+          "enumValues": null
+        },
+        {
+          "kind": "INTERFACE",
           "name": "ModelInterface",
           "description": "An object with an ID.",
           "interfaces": [
@@ -2395,6 +2552,11 @@
             {
               "kind": "OBJECT",
               "name": "Attachment",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "BlogPost",
               "ofType": null
             },
             {
@@ -2782,6 +2944,16 @@
             {
               "kind": "OBJECT",
               "name": "Attachment",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "BlogPost",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "BlogPost",
               "ofType": null
             },
             {

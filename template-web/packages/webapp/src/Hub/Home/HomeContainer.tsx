@@ -20,7 +20,9 @@ function HomeContainer() {
     }
   `);
 
-  if (!data.currentUser) {
+  const currentUser = data.currentUser;
+
+  if (!currentUser) {
     return null;
   }
 
@@ -33,7 +35,7 @@ function HomeContainer() {
 
   return (
     <BrandedNavBar navigationItems={navigationItems}>
-      <div className="mt-4 px-4">
+      <div className="mt-4 px-2">
         <Outlet />
       </div>
     </BrandedNavBar>

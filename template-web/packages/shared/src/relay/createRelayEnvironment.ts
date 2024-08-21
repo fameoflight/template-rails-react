@@ -13,9 +13,6 @@ function createRelayEnvironment(options: NetworkLayerOptions) {
       queryCacheExpirationTime: 60 * 60 * 1000,
       gcReleaseBufferSize: 1000,
     }),
-    requiredFieldLogger: (arg) => {
-      console.error('requiredFieldLogger', arg);
-    },
     log: (event) => {
       // console.debug('[relay environment event]', event);
     },
