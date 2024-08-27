@@ -1,27 +1,35 @@
 import React from 'react';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { classNames } from '@picasso/shared/src/utils';
+import { Tooltip } from 'antd';
 
 export type GridItemType = {
   id: string | 'new';
   name: string;
   iconUrl?: string;
+  editable?: boolean;
+  deletable?: boolean;
+  className?: string;
+  tooltip?: string | React.ReactNode;
+  tag?: {
+    name: string;
+    className: string;
+  };
 };
 
 interface IGridItemViewProps<T extends GridItemType> {
   record: T;
   onClick?: (record: T) => void;
   onDelete?: (record: T) => void;
+  onEdit?: (record: T) => void;
   size?: 'small' | 'default';
-  tag?: {
-    name: string;
-    className: string;
-  };
 }
 
 function GridItem<T extends GridItemType>(props: IGridItemViewProps<T>) {
-  const { record, onClick, onDelete, size = 'default', tag } = props;
-  const { name, iconUrl } = record;
+  const { record, onClick, size = 'default' } = props;
+  const tag = record.tag;
+
+  const { name, iconUrl, tooltip } = record;
 
   const handleClick = (e: React.MouseEvent) => {
     if (onClick && !e.defaultPrevented) {
@@ -32,29 +40,38 @@ function GridItem<T extends GridItemType>(props: IGridItemViewProps<T>) {
   const handleDelete = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (onDelete) {
-      onDelete(record);
-    }
+    props.onDelete?.(record);
   };
 
-  const showDelete = record.id !== 'new' && onDelete;
+  const handleEdit = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    props.onEdit?.(record);
+  };
 
-  return (
+  const showDelete = record.id !== 'new' && record.deletable;
+
+  const showEditable = record.id !== 'new' && record.editable && props.onEdit;
+
+  const content = (
     <div
       onClick={handleClick}
       key={record.id}
       className={classNames(
         size === 'default' ? 'w-32 py-4 px-2' : 'w-24 py-2 px-1',
+        record.className,
         'relative shadow-sm bg-white m-4 text-center items-center hover:opacity-80 hover:bg-gray-50 cursor-pointer'
       )}
     >
       {tag && (
         <div
-          className={`absolute -top-2 -left-2 shadow-md px-2 uppercase ${tag.className}`}
+          className={`absolute -top-2 -left-2 shadow-md px-2  ${tag.className} text-xs truncate max-w-[80%]`}
+          title={tag.name}
         >
           {tag.name}
         </div>
       )}
+
       {showDelete && (
         <button
           className="absolute top-1 right-1 w-6 h-6 flex items-center justify-center rounded-full bg-white shadow-sm border border-gray-200 text-gray-400 hover:text-red-600 hover:bg-red-50 hover:border-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
@@ -62,6 +79,16 @@ function GridItem<T extends GridItemType>(props: IGridItemViewProps<T>) {
           aria-label="Delete item"
         >
           <DeleteOutlined style={{ fontSize: '12px' }} />
+        </button>
+      )}
+
+      {showEditable && (
+        <button
+          className="absolute top-1 right-1 w-6 h-6 flex items-center justify-center rounded-full bg-white shadow-sm border border-gray-200 text-gray-400 hover:text-red-600 hover:bg-red-50 hover:border-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
+          onClick={handleEdit}
+          aria-label="Edit item"
+        >
+          <EditOutlined style={{ fontSize: '12px' }} />
         </button>
       )}
 
@@ -81,6 +108,14 @@ function GridItem<T extends GridItemType>(props: IGridItemViewProps<T>) {
         </div>
       )}
     </div>
+  );
+
+  return tooltip ? (
+    <Tooltip title={tooltip} placement="bottom">
+      {content}
+    </Tooltip>
+  ) : (
+    content
   );
 }
 

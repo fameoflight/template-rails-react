@@ -56,6 +56,7 @@ function createDirectUpload(
           errors
           directUpload {
             id
+            filename
             signedId
             publicUrl
             directUploadHeaders

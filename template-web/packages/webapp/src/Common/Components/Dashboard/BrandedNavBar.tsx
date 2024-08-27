@@ -17,7 +17,7 @@ import { Disclosure } from '@headlessui/react';
 import { Bars4Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Avatar } from 'antd';
 
-import ProfileMenu from './MobileUserMenu';
+import MobileUserMenu from './MobileUserMenu';
 
 const brandedNavBarQuery = graphql`
   query BrandedNavBarQuery {
@@ -107,7 +107,7 @@ function BrandedNavBar(props: IBrandedNavBarProps) {
   return (
     <>
       <div className={`bg-picasso-primary-900 ${className}`}>
-        <Disclosure as="nav" className="px-8 flex-shrink">
+        <Disclosure as="nav" className="px-4 flex-shrink">
           {({ open }) => (
             <>
               <div className="flex items-center justify-between h-16">
@@ -144,7 +144,10 @@ function BrandedNavBar(props: IBrandedNavBarProps) {
                 <div className="hidden md:block">
                   <div className="ml-4 flex items-center md:ml-6">
                     {/* Profile dropdown */}
-                    <ProfileMenu user={user} navigationItems={userNavigation} />
+                    <MobileUserMenu
+                      user={user}
+                      navigationItems={userNavigation}
+                    />
                   </div>
                 </div>
                 <div className="-mr-2 flex md:hidden">
@@ -224,7 +227,7 @@ function BrandedNavBar(props: IBrandedNavBarProps) {
         )}
       </div>
 
-      <div className="p-4 flex-grow flex flex-col bg-slate-100">
+      <div className="p-2 flex-grow flex flex-col bg-slate-100">
         <Suspense paragraph={50} fallback={props.suspeneFallback}>
           {children}
         </Suspense>

@@ -18,8 +18,9 @@ const fragmentSpec = graphql`
     publishedAt
     richTextContent {
       content
-      contentHtml
       format
+      contentHtml
+      contentMarkdown
     }
   }
 `;

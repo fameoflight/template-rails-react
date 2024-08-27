@@ -64,7 +64,7 @@ export default function ToolbarPlugin() {
       ),
       editor.registerCommand(
         CAN_UNDO_COMMAND,
-        (payload) => {
+        (payload: any) => {
           setCanUndo(payload);
           return false;
         },
@@ -72,7 +72,7 @@ export default function ToolbarPlugin() {
       ),
       editor.registerCommand(
         CAN_REDO_COMMAND,
-        (payload) => {
+        (payload: any) => {
           setCanRedo(payload);
           return false;
         },

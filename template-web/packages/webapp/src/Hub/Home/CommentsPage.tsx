@@ -71,7 +71,6 @@ function CommentsPage(props: ICommentsPageProps) {
     `);
 
   const onCommentSubmit = (values) => {
-    console.log('Submitting comment', values);
     commitComment({
       variables: {
         input: {

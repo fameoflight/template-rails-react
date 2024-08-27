@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import {
   InitialConfigType,
@@ -7,10 +7,15 @@ import {
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import {
+  $convertFromMarkdownString,
+  $convertToMarkdownString,
+  TRANSFORMERS,
+} from '@lexical/markdown';
 
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 
-import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { $generateHtmlFromNodes } from '@lexical/html';
 
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 
@@ -21,6 +26,15 @@ import ExampleTheme from './ExampleTheme';
 
 import './styles.css';
 import { EditorState } from 'lexical';
+import type { LexicalEditor } from 'lexical';
+import { $getRoot, $createParagraphNode, $createTextNode } from 'lexical';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+
+import { HeadingNode, QuoteNode } from '@lexical/rich-text';
+import { ListItemNode, ListNode } from '@lexical/list';
+import { CodeHighlightNode, CodeNode } from '@lexical/code';
+
+import type { Transformer } from '@lexical/markdown';
 
 function Placeholder({ children }: { children: React.ReactNode }) {
   return (
@@ -28,38 +42,165 @@ function Placeholder({ children }: { children: React.ReactNode }) {
   );
 }
 
-export type RichTextValue = {
-  content: string | null | undefined;
-  contentHtml?: string | null | undefined;
-  format: 'lexical' | 'plain';
+export type RichTextEditorOnChange = {
+  content: string;
+  contentHtml: string;
+  contentMarkdown: string;
+  format: 'plain' | 'lexical' | 'markdown';
 };
 
+function InitialContentPlugin(props: {
+  value?: Partial<RichTextEditorOnChange>;
+}) {
+  const format = props.value?.format || 'lexical';
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+    editor.update(() => {
+      if (format === 'markdown') {
+        if (props.value?.contentMarkdown) {
+          $convertFromMarkdownString(
+            props.value.contentMarkdown,
+            TRANSFORMERS as Transformer[]
+          );
+        } else {
+          if (props.value?.content) {
+            try {
+              const parsedState = editor.parseEditorState(props.value.content);
+              editor.setEditorState(parsedState);
+            } catch (e) {
+              console.error(e);
+              $convertFromMarkdownString(
+                props.value.content,
+                TRANSFORMERS as Transformer[]
+              );
+            }
+          }
+        }
+      }
+
+      if (format === 'lexical') {
+        if (props.value?.content) {
+          try {
+            const parsedState = editor.parseEditorState(props.value.content);
+            editor.setEditorState(parsedState);
+          } catch (e) {
+            console.error(e);
+          }
+        } else {
+          const root = $getRoot();
+          if (root.getFirstChild() === null) {
+            const paragraph = $createParagraphNode();
+            paragraph.append($createTextNode(''));
+            root.append(paragraph);
+          }
+        }
+      }
+
+      if (format === 'plain') {
+        const root = $getRoot();
+        if (root.getFirstChild() === null) {
+          const paragraph = $createParagraphNode();
+          paragraph.append($createTextNode(props.value?.content || ''));
+          root.append(paragraph);
+        }
+      }
+    });
+  }, [editor]);
+
+  return null;
+}
+
+function OnChangePlugin({
+  onChange,
+}: {
+  onChange: (
+    editorState: EditorState,
+    editor: LexicalEditor,
+    markdown: string,
+    html: string
+  ) => void;
+}) {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+
+    return editor.registerUpdateListener(({ editorState }) => {
+      editorState.read(() => {
+        const markdown = $convertToMarkdownString(
+          TRANSFORMERS as Transformer[]
+        );
+
+        const html = $generateHtmlFromNodes(editor, null);
+
+        onChange(editorState as any, editor as any, markdown, html);
+      });
+    });
+  }, [editor, onChange]);
+
+  return null;
+}
+
 interface RichTextEditorProps {
+  namespace?: string;
   readOnly?: boolean;
-  initialContent?: string | null;
-  onChange?: (content: string) => void;
+  initialContent?: Partial<RichTextEditorOnChange>;
+  onChange?: (value: RichTextEditorOnChange) => void;
   placeholder?: string;
+  toolbar?: boolean;
 }
 
 function RichTextEditor(props: RichTextEditorProps) {
+  const toolbar = props.toolbar ?? true;
+
+  const [isEditorReady, setIsEditorReady] = useState(false);
+
   const editorConfig: InitialConfigType = {
-    namespace: 'RichTextEditor',
-    nodes: [AutoLinkNode, LinkNode],
+    namespace: props.namespace || 'default',
+    nodes: [
+      HeadingNode,
+      QuoteNode,
+      ListItemNode,
+      ListNode,
+      CodeHighlightNode,
+      CodeNode,
+      AutoLinkNode,
+      LinkNode,
+    ],
     // Handling of errors during update
     onError(error: Error) {
+      console.error('Error during update:', error);
+      console.error(
+        'Make sure you are using different namespaces for different editors'
+      );
       throw error;
     },
     // The editor theme
     theme: ExampleTheme,
-    editorState: props.initialContent,
     editable: !!!props.readOnly,
   };
 
-  const onChange = (editorState: EditorState) => {
-    const editorContent = editorState.toJSON();
+  const onChange = (
+    editorState: EditorState,
+    editor: LexicalEditor,
+    markdown: string,
+    html: string
+  ) => {
+    const editorContent = JSON.stringify(editorState.toJSON());
 
     if (props.onChange) {
-      props.onChange(JSON.stringify(editorContent));
+      props.onChange({
+        content: JSON.stringify(editorContent),
+        contentHtml: html,
+        contentMarkdown: markdown,
+        format: props.initialContent?.format || 'lexical',
+      });
     }
   };
 
@@ -77,6 +218,7 @@ function RichTextEditor(props: RichTextEditorProps) {
               placeholder={<Placeholder>Nothing to see here...</Placeholder>}
               ErrorBoundary={LexicalErrorBoundary}
             />
+            <InitialContentPlugin value={props.initialContent} />
           </div>
         </div>
       </LexicalComposer>
@@ -86,7 +228,7 @@ function RichTextEditor(props: RichTextEditorProps) {
   return (
     <LexicalComposer initialConfig={editorConfig}>
       <div className="editor-container">
-        {props.readOnly ? null : <ToolbarPlugin />}
+        {toolbar && <ToolbarPlugin />}
         <div className="editor-inner">
           <RichTextPlugin
             contentEditable={<ContentEditable className="editor-input" />}
@@ -97,6 +239,7 @@ function RichTextEditor(props: RichTextEditorProps) {
           <AutoFocusPlugin />
           <OnChangePlugin onChange={onChange} />
           <AutoLinkPlugin />
+          <InitialContentPlugin value={props.initialContent} />
         </div>
       </div>
     </LexicalComposer>

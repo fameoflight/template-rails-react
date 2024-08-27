@@ -17,7 +17,6 @@ const fragmentSpec = graphql`
     tags
     richTextContent {
       content
-      contentHtml
       format
     }
   }

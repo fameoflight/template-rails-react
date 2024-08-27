@@ -314,13 +314,13 @@ type Query {
 type RichTextJson {
   content: String
   contentHtml: String
+  contentMarkdown: String
   format: RichTextJsonFormatEnum!
 }
 
 enum RichTextJsonFormatEnum {
   plain
   markdown
-  html
   lexical
 }
 

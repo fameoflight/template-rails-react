@@ -1,18 +1,28 @@
 import React from 'react';
 
-import { Form } from 'antd';
+import RichTextEditor from './index';
 
-import RichTextEditor, { RichTextValue } from './index';
+import { RichTextJsonValue } from './utils';
 
 interface IRichTextJsonViewProps {
-  value?: RichTextValue;
+  value?: RichTextJsonValue | null;
   className?: string;
+  namespace?: string;
 }
 
 function RichTextJsonView(props: IRichTextJsonViewProps) {
   return (
     <div className={`rich-text-json-view ${props.className}`}>
-      <RichTextEditor readOnly initialContent={props.value?.content} />
+      <RichTextEditor
+        readOnly
+        namespace={props.namespace}
+        initialContent={{
+          content: props.value?.content || undefined,
+          contentHtml: props.value?.contentHtml || undefined,
+          contentMarkdown: props.value?.contentMarkdown || undefined,
+          format: props.value?.format || 'lexical',
+        }}
+      />
     </div>
   );
 }

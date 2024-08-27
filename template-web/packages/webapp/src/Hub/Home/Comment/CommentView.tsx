@@ -6,7 +6,7 @@ import { CommentView_comment$key } from '@picasso/fragments/src/CommentView_comm
 import _ from 'lodash';
 
 import { Rate, Tag } from 'antd';
-import RichTextEditor from '@picasso/shared/src/RichTextEditor';
+import RichTextJsonView from '@picasso/shared/src/RichTextEditor/RichTextJsonView';
 
 const fragmentSpec = graphql`
   fragment CommentView_comment on Comment {
@@ -14,9 +14,10 @@ const fragmentSpec = graphql`
     tags
     rating
     richTextContent {
+      format
       content
       contentHtml
-      format
+      contentMarkdown
     }
     createdAt
   }
@@ -42,10 +43,7 @@ const CommentView = (props: ICommentViewProps) => {
       )}
 
       <div key={comment.id}>
-        <RichTextEditor
-          initialContent={comment.richTextContent.content}
-          readOnly
-        />
+        <RichTextJsonView value={comment.richTextContent} />
       </div>
 
       {showTags && (

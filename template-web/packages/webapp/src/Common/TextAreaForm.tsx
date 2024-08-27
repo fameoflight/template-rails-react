@@ -7,20 +7,30 @@ interface ITextAreaFormProps {
   form: FormInstance;
   loading: boolean;
   wrapperClassName?: string;
-  onSubmit?: (text: string, data?: any) => void;
+  onSubmit?: (text: string, data?: any, values?: any) => void;
   disabled?: boolean;
   placeholder?: string;
   buttonText?: string;
-  dataComponent?: React.ReactNode;
+  dataComponent?: (text?: string) => React.ReactNode;
+  children?: React.ReactNode;
 }
 
 function TextAreaForm(props: ITextAreaFormProps) {
+  const [text, setText] = React.useState('');
+
+  const onSubmit = (values: any) => {
+    const text = values.text;
+    const data = values.data;
+
+    props.onSubmit?.(text, data, values);
+  };
+
   return (
     <Spin spinning={props.loading} wrapperClassName={props.wrapperClassName}>
       <Form
         layout="vertical"
         form={props.form}
-        onFinish={(values) => props.onSubmit?.(values.text, values.data)}
+        onFinish={(values) => onSubmit(values)}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && e.shiftKey) {
             props.form.submit();
@@ -33,6 +43,7 @@ function TextAreaForm(props: ITextAreaFormProps) {
           noStyle
         >
           <Input.TextArea
+            onChange={(e) => setText(e.target.value)}
             disabled={props.disabled}
             allowClear={true}
             placeholder={props.placeholder}
@@ -41,10 +52,18 @@ function TextAreaForm(props: ITextAreaFormProps) {
         </Form.Item>
 
         {props.dataComponent && (
-          <Form.Item name="data" rules={[{ required: true }]} noStyle>
-            {props.dataComponent}
-          </Form.Item>
+          <>
+            <div className="my-2 text-sm text-gray-400 font-light">
+              It's important to write question first, as it will be used for
+              randomization
+            </div>
+            <Form.Item name="data" rules={[{ required: true }]} noStyle>
+              {props.dataComponent(text)}
+            </Form.Item>
+          </>
         )}
+
+        {props.children}
 
         <Tooltip title="Press Shift + Enter to send">
           <SubmitButton

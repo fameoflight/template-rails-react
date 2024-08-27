@@ -30,7 +30,6 @@ function useJsonStore<T extends JSONStore>(
   const [values, setValues] = useState<T>(defaultValues);
 
   const updateValues = (updates: Partial<T>): T => {
-    console.log('updateValues', updates);
     const newValues = _.merge({}, values, updates);
 
     if (!_.isEqual(values, newValues)) {

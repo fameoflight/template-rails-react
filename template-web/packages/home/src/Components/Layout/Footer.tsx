@@ -7,6 +7,17 @@ type LinkItem = {
   href: string;
 };
 
+type SocialItem = {
+  name: string;
+  href: string;
+  icon: (props: any) => JSX.Element;
+};
+
+type Section = {
+  name: string;
+  links: LinkItem[];
+};
+
 const navigation = {
   left: [
     {
