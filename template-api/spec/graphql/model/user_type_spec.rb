@@ -27,7 +27,6 @@ RSpec.describe Types::Model::UserType, type: %i[graphql request] do
     query_result = graphql_execute(query_string, user:, variables:, logging: true)
 
     pp query_result if query_result['errors']
-
     query_result['data']['node']
   end
 

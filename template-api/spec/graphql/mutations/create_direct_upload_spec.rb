@@ -4,20 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Mutations::CreateDirectUpload, type: :graphql do
   it 'no user' do
-    img_avatar = fixture_file_upload('img_avatar.png')
-
-    variables = {
-      input: {
-        filename: 'avatar.png',
-        contentType: 'image/png',
-        byteSize: File.size(img_avatar.path),
-        checksum: Digest::MD5.base64digest(File.read(img_avatar.path))
-      }
-    }
-
-    query = 'directUpload { directUploadUrl }'
-
-    resp = graphql_execute_mutation('createDirectUpload', variables:, query:)
+    resp = upload_file_fixture('img_avatar.png')
 
     expect(resp[:errors][0]['message']).to eq('An object of type Mutation was hidden due to permissions')
   end
@@ -25,20 +12,7 @@ RSpec.describe Mutations::CreateDirectUpload, type: :graphql do
   it 'with user' do
     user = create(:user)
 
-    img_avatar = fixture_file_upload('img_avatar.png')
-
-    variables = {
-      input: {
-        filename: 'avatar.png',
-        contentType: 'image/png',
-        byteSize: File.size(img_avatar.path),
-        checksum: Digest::MD5.base64digest(File.read(img_avatar.path))
-      }
-    }
-
-    query = 'directUpload { id, signedId, directUploadUrl, publicUrl }'
-
-    resp = graphql_execute_mutation('createDirectUpload', variables:, query:, user:)
+    resp = upload_file_fixture('img_avatar.png', user:)
 
     expect(resp[:object]['directUpload']).not_to be_nil
 

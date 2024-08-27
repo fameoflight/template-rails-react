@@ -2,12 +2,13 @@
 
 module Stores
   class RichText < Stores::Model
-    FORMATS = %w[plain markdown html lexical].freeze
+    FORMATS = %w[plain markdown lexical].freeze
 
     enumerize :format, in: FORMATS, default: nil
 
     attribute :content, :string
     attribute :content_html, :string
+    attribute :content_markdown, :string
 
     delegate :blank?, to: :content
 
@@ -19,14 +20,14 @@ module Stores
     validate :content_is_json
 
     def content_is_json
-      # check if content is a valid if format is lexical
+      begin
+        JSON.parse(content || '{}')
+      rescue JSON::ParserError => e
+        errors.add(:content, e.message)
+      end
 
-      if format == 'lexical'
-        begin
-          JSON.parse(content)
-        rescue JSON::ParserError => e
-          errors.add(:content, e.message)
-        end
+      if format == 'markdown'
+        errors.add(:content_markdown, 'is required') if content_markdown.blank?
       end
     end
   end

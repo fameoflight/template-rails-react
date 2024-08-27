@@ -12,14 +12,30 @@ end
 
 RSpec::Matchers.define :includes_job do |expected|
   match do |actual|
-    actual = [actual] unless actual.is_a?(Array)
+    expected = Array(expected).flatten
+    actual = Array(actual)
 
     matching_jobs = actual.select do |job|
       klass, arguments = job_klass(job)
-
-      klass == expected[0] && expected[1..].all? { |arg| arguments.include?(arg) }
+      if expected.size == 1
+        klass.to_s == expected[0].to_s
+      else
+        klass.to_s == expected[0].to_s && (expected[1..] - arguments).empty?
+      end
     end
 
-    expect(matching_jobs.size).not_to eq(0)
+    !matching_jobs.empty?
+  end
+
+  failure_message do |actual|
+    "expected that #{actual} would include job #{expected}"
+  end
+
+  failure_message_when_negated do |actual|
+    "expected that #{actual} would not include job #{expected}"
+  end
+
+  description do
+    "include job #{expected}"
   end
 end

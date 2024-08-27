@@ -81,4 +81,45 @@ module GraphqlSpecHelpers
   def graphql_id(object, type, context: nil)
     TemplateApiSchema.id_from_object(object, type, context)
   end
+
+  def upload_file_fixture(fixture_name, **kwargs)
+    user = kwargs[:user]
+
+    fixture = if fixture_name.is_a?(String)
+                fixture_file_upload(fixture_name)
+              else
+                fixture_name
+              end
+
+    extension = File.extname(fixture.original_filename).delete('.')
+
+    extension_content_type = {
+      'png' => 'image/png',
+      'jpg' => 'image/jpeg',
+      'jpeg' => 'image/jpeg',
+      'gif' => 'image/gif',
+      'pdf' => 'application/pdf',
+      'doc' => 'application/msword',
+      'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'xls' => 'application/vnd.ms-excel',
+      'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'ppt' => 'application/vnd.ms-powerpoint',
+      'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      'txt' => 'text/plain',
+      'rtf' => 'application/rtf'
+    }
+
+    variables = {
+      input: {
+        filename: fixture.original_filename,
+        contentType: extension_content_type[extension],
+        byteSize: File.size(fixture.path),
+        checksum: Digest::MD5.base64digest(File.read(fixture.path))
+      }
+    }
+
+    query = 'directUpload { id, signedId, directUploadUrl, publicUrl }'
+
+    graphql_execute_mutation('createDirectUpload', variables:, query:, user:)
+  end
 end

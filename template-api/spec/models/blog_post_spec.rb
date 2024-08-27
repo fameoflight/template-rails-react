@@ -50,7 +50,8 @@ RSpec.describe BlogPost, type: :model do
       blog_post = build(:blog_post, rich_text_content: { content: 'invalid' })
 
       expect(blog_post).not_to be_valid
-      expect(blog_post.errors[:rich_text_content]).to eq(["Format can't be blank", 'Format is not included in the list'])
+      expect(blog_post.errors[:rich_text_content]).to eq(["Format can't be blank", 'Format is not included in the list',
+                                                          "Content unexpected token at 'invalid'"])
     end
   end
 

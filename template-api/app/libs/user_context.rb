@@ -52,6 +52,8 @@ class UserContext
 
     return true if @super_user.present?
 
+    return true if super?
+
     false
   end
 end

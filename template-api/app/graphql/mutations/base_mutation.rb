@@ -12,6 +12,9 @@ module Mutations
 
     field :errors, [String], null: false
 
+    # by default transaction is enabled for all mutations let's create a way for it to disabled
+    # this is required for active storage
+
     def resolve(**kwargs)
       resp = {}
 
@@ -19,11 +22,19 @@ module Mutations
       # rendering of mutation result.
       @context[:skip_authorization] = true
 
-      begin
-        ActiveRecord::Base.transaction do
-          resp = run(**kwargs)
+      transactions = @context[:transactions].nil? ? true : @context[:transactions]
 
-          raise ActiveRecord::Rollback unless resp[:errors].empty?
+      Rails.logger.warn "Transactions are disabled for #{self.class.name}" unless transactions
+
+      begin
+        if transactions
+          ActiveRecord::Base.transaction do
+            resp = run(**kwargs)
+
+            raise ActiveRecord::Rollback unless resp[:errors].empty?
+          end
+        else
+          resp = run(**kwargs)
         end
       rescue ActiveRecord::Rollback => e
         Bugsnag.notify(e)

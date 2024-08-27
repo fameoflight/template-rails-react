@@ -44,7 +44,7 @@ RSpec.configure do |config|
   config.default_formatter = 'doc' if config.files_to_run.one?
 
   config.before do
-    ActiveStorage::Current.url_options = { host: 'localhost:3000' }
+    ActiveStorage::Current.url_options = { host: 'localhost:5001' }
   end
 
   #   config.profile_examples = 10

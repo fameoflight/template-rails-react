@@ -3311,6 +3311,20 @@
               ]
             },
             {
+              "name": "contentMarkdown",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null,
+              "args": [
+
+              ]
+            },
+            {
               "name": "format",
               "description": null,
               "type": {
@@ -3349,12 +3363,6 @@
             },
             {
               "name": "markdown",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "html",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null

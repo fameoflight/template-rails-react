@@ -26,7 +26,8 @@ FactoryBot.define do
     rich_text_content do
       {
         format: 'markdown',
-        content: 'This is my first post.'
+        content: '{}',
+        content_markdown: 'This is my first post.'
       }
     end
   end
