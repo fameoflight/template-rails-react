@@ -1,0 +1,2 @@
+web: /bin/bash -l -c "rake db:migrate && bundle exec puma -C config/puma.rb"
+worker: /bin/bash -l -c "rake db:migrate && bundle exec good_job start"

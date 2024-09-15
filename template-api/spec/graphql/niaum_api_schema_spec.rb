@@ -33,6 +33,26 @@ RSpec.describe TemplateApiSchema do
     end
   end
 
+  describe 'cities' do
+    def query(country_code:)
+      <<~GQL
+        {
+          cities(countryCode: "#{country_code}") {
+            name
+            lat
+            lng
+          }
+        }
+      GQL
+    end
+
+    it 'no cities' do
+      query_result = described_class.execute(query(country_code: 'US'))
+
+      expect(query_result['data']['cities'].count).to eq(16_822)
+    end
+  end
+
   describe 'blogPosts' do
     def query(status:)
       <<~GQL

@@ -56,4 +56,8 @@ class UserContext
 
     false
   end
+
+  def can_discard?(object)
+    can_destroy?(object)
+  end
 end

@@ -13,6 +13,7 @@ export default defineConfig({
   define: {
     'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+      BASE_PATH: process.env.BASE_PATH,
     },
   },
   server: {
@@ -35,7 +36,6 @@ export default defineConfig({
           fragments: ['@picasso/fragments'],
           antdicons: ['@ant-design/icons'],
           antd: ['antd', 'rc-select'],
-          editor: ['lexical'],
           password: ['antd-password-input-strength'],
           sortable: ['react-sortable-hoc', 'array-move'],
           signature: ['react-signature-canvas'],
@@ -50,6 +50,9 @@ export default defineConfig({
         },
       },
     },
+  },
+  optimizeDeps: {
+    exclude: ['lexical', '@lexical'],
   },
   plugins: [react(), relay, https && basicSsl()],
 });

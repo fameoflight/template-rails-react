@@ -13,4 +13,6 @@ Rails.application.configure do
   config.good_job.cron = {
     'good_job_cleanup' => { cron: '0 0 * * *', class: 'GoodJob::ActiveJob::CleanupJob' }
   }
+
+  config.on_thread_error = ->(exception) { Bugsnag.notify(exception) }
 end

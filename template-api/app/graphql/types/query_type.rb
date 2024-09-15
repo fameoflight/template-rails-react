@@ -22,6 +22,10 @@ module Types
       argument :short_id, String, required: true
     end
 
+    field :cities, [Types::CityType], null: false do
+      argument :country_code, String, required: true
+    end
+
     def env
       Rails.env
     end
@@ -48,6 +52,10 @@ module Types
 
     def blog_post(short_id:)
       BlogPost.find_by(short_id:)
+    end
+
+    def cities(country_code:)
+      Services::City.new(country_code).get
     end
   end
 end

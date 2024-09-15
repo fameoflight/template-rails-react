@@ -12,7 +12,7 @@ VCR.configure do |c|
 
   # This line makes VCR ignore requests to localhost. This is necessary
   # even if WebMock's allow_localhost is set to true.
-  c.ignore_localhost = true
+  c.ignore_localhost = false
 
   # ChromeDriver will make requests to chromedriver.storage.googleapis.com
   # to (I believe) check for updates. These requests will just show up as

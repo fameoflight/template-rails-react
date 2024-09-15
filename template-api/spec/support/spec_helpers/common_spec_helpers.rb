@@ -63,4 +63,15 @@ module CommonSpecHelpers
 
     ConsolePrint.log(*args, **kwargs)
   end
+
+  def get_super_user
+    User.create_or_update_by!(
+      { email: 'admin@test.com' },
+      update: {
+        name: 'Admin User',
+        password: 'testtest',
+        confirmed_at: Time.zone.now
+      }
+    )
+  end
 end

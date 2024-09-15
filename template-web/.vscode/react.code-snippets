@@ -38,6 +38,7 @@
     "description": "Creates a Inline React Functional Component with ES7 module system",
     "body": [
       "import React from \"react\";",
+      "import _ from \"lodash\";",
       "",
       "interface I${0:${TM_FILENAME_BASE}}Props {",
       "  children?: any;",

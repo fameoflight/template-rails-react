@@ -212,14 +212,12 @@ function RichTextEditor(props: RichTextEditorProps) {
     return (
       <LexicalComposer initialConfig={editorConfig}>
         <div className="editor-container">
-          <div className="editor-inner">
-            <RichTextPlugin
-              contentEditable={<ContentEditable className="editor-input" />}
-              placeholder={<Placeholder>Nothing to see here...</Placeholder>}
-              ErrorBoundary={LexicalErrorBoundary}
-            />
-            <InitialContentPlugin value={props.initialContent} />
-          </div>
+          <RichTextPlugin
+            contentEditable={<ContentEditable className="editor-input" />}
+            placeholder={<Placeholder>Nothing to see here...</Placeholder>}
+            ErrorBoundary={LexicalErrorBoundary}
+          />
+          <InitialContentPlugin value={props.initialContent} />
         </div>
       </LexicalComposer>
     );

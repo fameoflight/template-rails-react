@@ -2,7 +2,7 @@
 
 module Mutations
   class CreateUpdateMutation < Mutations::ModelMutation
-    field :user, Types::Model::UserType, null: true
+    field :current_user, Types::Model::UserType, null: true
 
     def run(**kwargs)
       # TODO(hemantv): remove nil values from mutation_types
@@ -41,21 +41,23 @@ module Mutations
     end
 
     def save_and_return(object)
-      if object.save
-        {
-          success: true,
-          field_name => object,
-          user: user_context.current_user,
-          errors: []
-        }
-      else
-        {
-          success: false,
-          field_name => nil,
-          user: user_context.current_user,
-          errors: object.errors.full_messages
-        }
-      end
+      result = if object.save
+                 {
+                   success: true,
+                   field_name => object,
+                   errors: []
+                 }
+               else
+                 {
+                   success: false,
+                   field_name => nil,
+                   errors: object.errors.full_messages
+                 }
+               end
+
+      result[:current_user] = user_context.current_user
+
+      result
     end
   end
 end

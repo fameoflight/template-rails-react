@@ -81,7 +81,6 @@ function CommentsPage(props: ICommentsPageProps) {
         },
       },
       onCompleted: (response) => {
-        console.log('Comment created', response);
         updateData();
       },
       onError: (error) => {

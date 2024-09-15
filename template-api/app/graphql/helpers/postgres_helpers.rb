@@ -21,7 +21,7 @@ module Helpers
         case database_type
         when :integer, :number
           GraphQL::Types::Int
-        when :decimal
+        when :decimal, :float
           GraphQL::Types::Float
         when :boolean
           GraphQL::Types::Boolean

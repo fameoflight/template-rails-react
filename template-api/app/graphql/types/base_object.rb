@@ -7,6 +7,7 @@ module Types
     field_class Types::BaseField
 
     include Helpers::ActiveStorage
+    include Types::PermissionField
 
     extend Helpers::EnumHelpers
     include Helpers::Authorization

@@ -2,7 +2,7 @@
 // @ts-nocheck
 import React, { useEffect } from 'react';
 
-import { Spin } from 'antd';
+import { Alert, Spin } from 'antd';
 
 const BoardToken = 'e4fb2834-d574-8e56-9499-6c089e5df582';
 
@@ -53,10 +53,34 @@ function Feedback(props: IFeedbackProps) {
     });
   }, []);
 
+  const emails = ['fameoflight@gmail.com'];
+
+  const alertDescription = (
+    <div>
+      If you run into problem, please let us know by sending an email to{' '}
+      {emails.map((email, index) => (
+        <span key={index}>
+          <a href={`mailto:${email}`}>{email}</a>
+          {index < emails.length - 1 ? ', ' : ''}
+        </span>
+      ))}
+    </div>
+  );
+
   return (
-    <Spin spinning={!loaded}>
-      <div data-canny className={props.className} />
-    </Spin>
+    <div>
+      <Alert
+        className="mb-2"
+        message="Feedback"
+        description={alertDescription}
+        type="info"
+        showIcon
+      />
+
+      <Spin spinning={!loaded}>
+        <div data-canny className={props.className} />
+      </Spin>
+    </div>
   );
 }
 

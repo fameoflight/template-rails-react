@@ -32,6 +32,10 @@ class ModelAttachment < ApplicationRecord
   after_save :notify_owner
 
   def notify_owner
-    owner.after_attachment_create(self)
+    owner.try(:after_attachment_create, self)
+  end
+
+  def user
+    owner if owner_type == 'User'
   end
 end
