@@ -52,6 +52,11 @@ export function fetchQuery(options: FetchQueryOptions) {
 
   const apiInstance = api.apiInstance(kind);
 
+  // Set appropriate headers based on format
+  const headers = format === 'msgpack' 
+    ? { 'Accept': 'application/msgpack' }
+    : { 'Accept': 'application/json' };
+
   return apiInstance
     .post({
       endpoint: `${endpoint}.${format}`,
@@ -60,6 +65,7 @@ export function fetchQuery(options: FetchQueryOptions) {
         variables,
       }),
       responseType: 'arraybuffer',
+      headers,
     })
     .then((response) => {
       const data: any = decode(response.data);

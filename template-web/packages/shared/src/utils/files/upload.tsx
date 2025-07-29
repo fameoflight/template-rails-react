@@ -95,6 +95,10 @@ const createUploadParams = (file: File) =>
   });
 
 const directUpload = (data: FileMutationData, file: File) => {
+  if (!data?.directUploadUrl || !data?.directUploadHeaders) {
+    throw new Error('Invalid direct upload data: missing URL or headers');
+  }
+  
   const upload = new BlobUpload({
     file,
     directUploadData: {

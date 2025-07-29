@@ -1,4 +1,13 @@
-import { TextAreaUserType } from 'src/Common/TextAreaForm';
+interface TextAreaUserType {
+  name: string;
+  nickname?: string;
+  countryCode?: string;
+  admin1Name?: string;
+  admin2Name?: string;
+  lat?: number;
+  lng?: number;
+  birthday?: string;
+}
 
 class SeededRandom {
   private state: number;
