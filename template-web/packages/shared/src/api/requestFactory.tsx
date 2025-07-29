@@ -8,6 +8,7 @@ export interface IRequestGetProps {
   endpoint: string;
   params?: { [key: string]: string | number | boolean | undefined | null };
   responseType?: 'json' | 'text' | 'arraybuffer';
+  headers?: { [key: string]: string };
 }
 
 export interface IRequestPostProps extends IRequestGetProps {
@@ -70,16 +71,20 @@ const requestsFactory = (requestsFactoryOptions: IRequestsFactoryProps) => {
 
     const resolvedBaseUrl = await Promise.resolve(baseURL);
 
+    // Merge custom headers with default headers
+    const customHeaders = overrides.headers || {};
+    const headers = _.merge({}, resolvedHeaders, customHeaders);
+
     const defaults = {
       method: 'post',
       timeout: 30000,
       responseType: 'json',
       crossdomain: true,
-      headers: resolvedHeaders,
+      headers,
       baseURL: resolvedBaseUrl,
     };
 
-    return _.merge(defaults, overrides);
+    return _.merge(defaults, _.omit(overrides, 'headers'));
   };
 
   /**
@@ -131,12 +136,14 @@ const requestsFactory = (requestsFactoryOptions: IRequestsFactoryProps) => {
     }
 
     const data = _.get(options, 'data', null);
+    const customHeaders = options.headers || {};
 
     const axiosWrapperOptions = await axiosOptions({
       method,
       url,
       data,
       responseType: options.responseType || 'json',
+      headers: customHeaders,
     });
 
     return axiosWrapper(client, axiosWrapperOptions);

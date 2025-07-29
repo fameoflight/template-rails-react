@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mix deps.get:*)",
+      "Bash(mix ecto.create:*)",
+      "Bash(mix phx.gen.schema:*)",
+      "Bash(mix ecto.migrate:*)",
+      "Bash(mix compile)",
+      "Bash(mix test:*)",
+      "Bash(mix graphql.schema.validate:*)",
+      "Bash(mix graphql.schema.dump:*)",
+      "Bash(grep:*)",
+      "Bash(mix graphql.schema.sdl:*)",
+      "Bash(mix graphql:*)",
+      "Bash(rspec:*)",
+      "Bash(rm:*)",
+      "Bash(mix ecto.gen.migration:*)",
+      "Bash(iex:*)",
+      "Bash(elixir:*)",
+      "Bash(mix run:*)",
+      "Bash(bundle exec rake:*)",
+      "Bash(mix help:*)",
+      "Bash(MIX_ENV=test mix ecto.create)",
+      "Bash(MIX_ENV=test mix ecto.migrate)",
+      "Bash(mix absinthe.schema.sdl:*)",
+      "Bash(mkdir:*)",
+      "Bash(mix seed:*)",
+      "Bash(find:*)",
+      "Bash(mix absinthe.schema.graphql:*)",
+      "Bash(ls:*)"
+    ],
+    "deny": []
+  }
+}
