@@ -15,6 +15,7 @@ import superUserRoutes from 'src/SuperUser/routes';
 import { AnimatePresence, LayoutGroup } from 'framer-motion';
 import HomeContainer from 'src/Hub/Home/HomeContainer';
 import HomePage from 'src/Hub/Home/HomePage';
+import ChatPage from 'src/Hub/Chat/ChatPage';
 
 const AppRoutes = () => {
   const routes: RouteObject[] = [
@@ -49,6 +50,10 @@ const AppRoutes = () => {
                 {
                   path: '',
                   element: <HomePage />,
+                },
+                {
+                  path: 'chat',
+                  element: <ChatPage />,
                 },
               ],
             },

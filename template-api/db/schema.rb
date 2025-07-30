@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_23_190726) do
+ActiveRecord::Schema[7.0].define(version: 2025_07_29_105644) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "hstore"
@@ -174,6 +174,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_23_190726) do
     t.index ["scheduled_at"], name: "index_good_jobs_on_scheduled_at", where: "(finished_at IS NULL)"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.text "content"
+    t.bigint "user_id", null: false
+    t.string "room_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
   create_table "model_attachments", force: :cascade do |t|
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.string "name", null: false
@@ -185,6 +194,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_23_190726) do
     t.datetime "updated_at", null: false
     t.index ["discarded_at"], name: "index_model_attachments_on_discarded_at"
     t.index ["owner_type", "owner_id"], name: "index_model_attachments_on_owner"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title"
+    t.text "message"
+    t.string "notification_type"
+    t.datetime "read_at"
+    t.json "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
@@ -261,6 +282,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_23_190726) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "api_access_tokens", "users"
   add_foreign_key "comments", "users"
+  add_foreign_key "messages", "users"
+  add_foreign_key "notifications", "users"
   add_foreign_key "super_users", "users"
   add_foreign_key "super_users", "users", column: "spoof_user_id"
   add_foreign_key "versions", "users"

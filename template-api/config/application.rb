@@ -33,5 +33,8 @@ module PicassoApi
     config.active_storage.queues.purge = :default
 
     # config.eager_load_paths << Rails.root.join('graphql')
+    
+    # Ensure services directory is autoloaded
+    config.autoload_paths += %W(#{config.root}/app/services)
   end
 end

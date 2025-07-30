@@ -18,11 +18,13 @@ import { Bars4Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Avatar } from 'antd';
 
 import MobileUserMenu from './MobileUserMenu';
+import NotificationBell from '../Notifications/NotificationBell';
 
 const brandedNavBarQuery = graphql`
   query BrandedNavBarQuery {
     currentUser {
       id
+      modelId
       name
       spoof
       avatar {
@@ -142,7 +144,11 @@ function BrandedNavBar(props: IBrandedNavBarProps) {
                   </div>
                 </div>
                 <div className="hidden md:block">
-                  <div className="ml-4 flex items-center md:ml-6">
+                  <div className="ml-4 flex items-center md:ml-6 space-x-4">
+                    {/* Notification Bell */}
+                    {user && (
+                      <NotificationBell userId={user.modelId.toString()} />
+                    )}
                     {/* Profile dropdown */}
                     <MobileUserMenu
                       user={user}
@@ -182,21 +188,27 @@ function BrandedNavBar(props: IBrandedNavBarProps) {
                   ))}
                 </div>
                 <div className="pt-4 pb-3">
-                  <div className="flex items-center px-5">
-                    <div className="flex-shrink-0">
-                      <Avatar
-                        icon={<UserOutlined />}
-                        className="h-8 w-8 rounded-full"
-                        src={user?.avatar?.url}
-                      >
-                        {name[0]}
-                      </Avatar>
-                    </div>
-                    <div className="ml-3">
-                      <div className="text-base font-medium text-white">
-                        {name}
+                  <div className="flex items-center justify-between px-5">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0">
+                        <Avatar
+                          icon={<UserOutlined />}
+                          className="h-8 w-8 rounded-full"
+                          src={user?.avatar?.url}
+                        >
+                          {name[0]}
+                        </Avatar>
+                      </div>
+                      <div className="ml-3">
+                        <div className="text-base font-medium text-white">
+                          {name}
+                        </div>
                       </div>
                     </div>
+                    {/* Mobile Notification Bell */}
+                    {user && (
+                      <NotificationBell userId={user.modelId.toString()} />
+                    )}
                   </div>
                   <div className="mt-3 px-2 space-y-1">
                     {userNavigation.map((item) => (

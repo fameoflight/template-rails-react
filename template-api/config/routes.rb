@@ -2,6 +2,7 @@
 #
 #                                   Prefix Verb    URI Pattern                                                                                       Controller#Action
 #                           graphiql_rails         /graphiql                                                                                         GraphiQL::Rails::Engine {:graphql_path=>"/graphql"}
+#                                                  /cable                                                                                            #<ActionCable::Server::Base:0x000000010a0d0bf0 @config=#<ActionCable::Server::Configuration:0x0000000109e9cf00 @log_tags=[], @connection_class=#<Proc:0x0000000109eb8f20 /Users/hemantv/.rvm/gems/ruby-3.2.4/gems/actioncable-7.0.8.3/lib/action_cable/engine.rb:46 (lambda)>, @worker_pool_size=4, @disable_request_forgery_protection=false, @allow_same_origin_as_host=true, @logger=#<ActiveSupport::Logger:0x00000001090fbea0 @level=0, @progname=nil, @default_formatter=#<Logger::Formatter:0x0000000102fa5ca0 @datetime_format=nil>, @formatter=#<ActiveSupport::Logger::SimpleFormatter:0x0000000102ea2178 @datetime_format=nil, @thread_key="activesupport_tagged_logging_tags:17440">, @logdev=#<Logger::LogDevice:0x00000001090fbef0 @shift_period_suffix="%Y%m%d", @shift_size=1048576, @shift_age=0, @filename="/Users/hemantv/workspace/template-rails-react-copy/template-api/log/development.log", @dev=#<File:/Users/hemantv/workspace/template-rails-react-copy/template-api/log/development.log>, @binmode=false, @mon_data=#<Monitor:0x0000000102fa4cb0>, @mon_data_owner_object_id=7980>>, @cable={"adapter"=>"redis", "url"=>"redis://localhost:6379/1"}, @mount_path="/cable", @precompile_assets=true, @allowed_request_origins=/https?:\/\/localhost:\d+/>, @mutex=#<Monitor:0x0000000109eb16a8>, @pubsub=nil, @worker_pool=nil, @event_loop=nil, @remote_connections=nil>
 #                               api_health GET     /api/health(.:format)                                                                             api/health#index
 #            new_api_internal_user_session GET     /api/internal/auth/sign_in(.:format)                                                              api/internal/auth/sessions#new
 #                api_internal_user_session POST    /api/internal/auth/sign_in(.:format)                                                              api/internal/auth/sessions#create
@@ -24,7 +25,8 @@
 #         api_internal_auth_validate_token GET     /api/internal/auth/validate_token(.:format)                                                       devise_token_auth/token_validations#validate_token
 #                api_internal_users_avatar POST    /api/internal/users/avatar(.:format)                                                              api/internal/users#avatar
 #          api_internal_users_google_login POST    /api/internal/users/google_login(.:format)                                                        api/internal/users#google_login
-#                     api_internal_graphql POST    /api/internal/graphql(.:format)                                                                   api/internal/graphql#execute {:format=>:json}
+#                     api_internal_graphql POST    /api/internal/graphql(.:format)                                                                   api/internal/graphql#execute
+#                    api_internal_messages GET     /api/internal/messages(.:format)                                                                  api/internal/messages#index
 #                         api_public_v1_me GET     /api/public/v1/me(.:format)                                                                       api/public/v1/me#index {:format=>"json"}
 #                                          OPTIONS /*path(.:format)                                                                                  application#cors_preflight_check
 #         turbo_recede_historical_location GET     /recede_historical_location(.:format)                                                             turbo/native/navigation#recede
@@ -61,6 +63,7 @@
 
 Rails.application.routes.draw do
   mount GraphiQL::Rails::Engine, at: '/graphiql', graphql_path: '/graphql' if Rails.env.development?
+  mount ActionCable.server => '/cable'
   devise_for :users, skip: :all
 
   namespace :api do
@@ -73,7 +76,18 @@ Rails.application.routes.draw do
       }
       post 'users/avatar'
       post 'users/google_login'
-      post '/graphql', to: 'graphql#execute', defaults: { format: :json }
+      post '/graphql', to: 'graphql#execute'
+      
+      resources :messages, only: [:index]
+      
+      resources :notifications, only: [:index] do
+        member do
+          patch :mark_as_read
+        end
+        collection do
+          patch :mark_all_as_read
+        end
+      end
     end
 
     namespace :public, defaults: { format: 'json' } do

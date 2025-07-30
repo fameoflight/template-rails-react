@@ -12,6 +12,9 @@ module Api
         variables = prepare_variables(params[:variables])
         query = params[:query]
         operation_name = params[:operationName]
+        
+        Rails.logger.info "🔍 GraphQL Request - Operation: #{operation_name}, Query: #{query&.first(100)}..."
+        Rails.logger.info "🔍 GraphQL Variables: #{variables}"
 
         context = {
           user_context:,

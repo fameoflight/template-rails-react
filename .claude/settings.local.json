@@ -27,7 +27,16 @@
       "Bash(mix seed:*)",
       "Bash(find:*)",
       "Bash(mix absinthe.schema.graphql:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(rails generate model:*)",
+      "Bash(bundle install:*)",
+      "Bash(rails:*)",
+      "Bash(npm install:*)",
+      "Bash(yarn add:*)",
+      "Bash(yarn build)",
+      "Bash(redis-cli:*)",
+      "Bash(npm run:*)",
+      "Bash(yarn relay-compiler:*)"
     ],
     "deny": []
   }

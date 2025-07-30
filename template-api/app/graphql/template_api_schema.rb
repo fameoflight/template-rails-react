@@ -3,9 +3,13 @@
 class TemplateApiSchema < GraphQL::Schema
   extend Helpers::EncryptIds
   use GraphQL::Dataloader
+  
+  # Configure ActionCable subscriptions with debugging
+  use GraphQL::Subscriptions::ActionCableSubscriptions, redis: Redis.new(url: ENV.fetch("REDIS_URL", "redis://localhost:6379/1"))
 
   query(Types::QueryType)
   mutation(Mutations::MutationType)
+  subscription(Types::SubscriptionType)
 
   orphan_types [
     Types::Store::InlineAddressType

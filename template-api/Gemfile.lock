@@ -322,6 +322,7 @@ GEM
     rbs (2.8.4)
     rdoc (6.7.0)
       psych (>= 4.0.0)
+    redis (4.8.1)
     regexp_parser (2.9.2)
     reline (0.5.8)
       io-console (~> 0.5)
@@ -519,6 +520,7 @@ DEPENDENCIES
   rack-attack
   rack-cors
   rails (~> 7.0.8, >= 7.0.8.1)
+  redis (~> 4.0)
   rotp
   rspec
   rspec-rails

@@ -20,5 +20,10 @@ module Mutations
     field :api_access_token_create_update, mutation: Mutations::Model::ApiAccessTokenCreateUpdate
 
     field :comment_create_update, mutation: Mutations::Model::CommentCreateUpdate
+
+    field :message_create, mutation: Mutations::MessageCreate
+
+    field :notification_mark_as_read, mutation: Mutations::NotificationMarkAsRead
+    field :notification_mark_all_as_read, mutation: Mutations::NotificationMarkAllAsRead
   end
 end

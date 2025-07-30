@@ -26,6 +26,17 @@ module Types
       argument :country_code, String, required: true
     end
 
+    field :messages, [Types::MessageType], null: false do
+      argument :room_id, String, required: true
+      argument :limit, Integer, required: false, default_value: 50
+    end
+
+    field :notifications, Types::NotificationType.connection_type, null: false do
+      argument :limit, Integer, required: false, default_value: 20
+    end
+
+    field :unread_notification_count, Integer, null: false
+
     def env
       Rails.env
     end
@@ -56,6 +67,18 @@ module Types
 
     def cities(country_code:)
       Services::City.new(country_code).get
+    end
+
+    def messages(room_id:, limit:)
+      Message.for_room(room_id).recent.limit(limit)
+    end
+
+    def notifications(limit:)
+      user_context.current_user.notifications.recent.limit(limit)
+    end
+
+    def unread_notification_count
+      user_context.current_user.notifications.unread.count
     end
   end
 end

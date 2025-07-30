@@ -55,6 +55,7 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
 
   has_many :comments, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   # validates :avatar, presence: true, allow_blank: true, blob: { content_type: :image, size_range: 1..(5.megabytes) }
 
