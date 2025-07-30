@@ -36,7 +36,12 @@
       "Bash(yarn build)",
       "Bash(redis-cli:*)",
       "Bash(npm run:*)",
-      "Bash(yarn relay-compiler:*)"
+      "Bash(yarn relay-compiler:*)",
+      "Bash(mix demo.notifications:*)",
+      "Bash(mv:*)",
+      "Bash(cp:*)",
+      "Bash(mix phx.routes:*)",
+      "Bash(curl:*)"
     ],
     "deny": []
   }

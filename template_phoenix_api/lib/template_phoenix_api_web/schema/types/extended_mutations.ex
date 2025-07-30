@@ -628,6 +628,8 @@ defmodule TemplatePhoenixApiWeb.Schema.Types.ExtendedMutations do
           }}
       end
     end
+
+    import_fields :message_create_mutation
   end
 
   # Input types for mutations

@@ -29,6 +29,8 @@ defmodule TemplatePhoenixApi.Accounts.User do
 
     has_many :api_access_tokens, TemplatePhoenixApi.Accounts.ApiAccessToken
     has_many :comments, TemplatePhoenixApi.Content.Comment
+    has_many :messages, TemplatePhoenixApi.Content.Message
+    has_many :notifications, TemplatePhoenixApi.Content.Notification
     has_many :versions, TemplatePhoenixApi.Audit.Version
     
     has_one :avatar, TemplatePhoenixApi.Content.Attachment,

@@ -20,4 +20,12 @@ defmodule TemplatePhoenixApi.Factory do
     user_factory()
     |> Map.put(:otp_secret, "JBSWY3DPEHPK3PXP")
   end
+
+  def message_factory do
+    %TemplatePhoenixApi.Content.Message{
+      content: Faker.Lorem.sentence(),
+      room_id: sequence(:room_id, &"room-#{&1}"),
+      user: build(:user)
+    }
+  end
 end

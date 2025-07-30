@@ -16,18 +16,38 @@ defmodule TemplatePhoenixApiWeb.Schema do
   import_types Types.User
   import_types Types.Auth
   import_types Types.PlaceholderTypes
+  import_types Types.Message
+  import_types Types.Notification
   import_types Types.ExtendedQueries
   import_types Types.ExtendedMutations
+  
+  # Import mutations
+  import_types TemplatePhoenixApiWeb.Schema.Mutations.MessageCreate
+  import_types TemplatePhoenixApiWeb.Schema.Mutations.NotificationMutations
+  
+  # Import queries  
+  import_types TemplatePhoenixApiWeb.Schema.Queries.MessageQueries
+  import_types TemplatePhoenixApiWeb.Schema.Queries.NotificationQueries
+  
+  # Import subscriptions
+  import_types TemplatePhoenixApiWeb.Schema.Subscriptions
 
   query name: "Query" do
     import_fields :user_queries
     import_fields :auth_queries
     import_fields :extended_queries
+    import_fields :message_queries
+    import_fields :notification_queries
   end
 
   mutation name: "Mutation" do
     import_fields :auth_mutations
     import_fields :extended_mutations
+    import_fields :notification_mutations
+  end
+
+  subscription name: "Subscription" do
+    import_fields :subscriptions
   end
 
   def context(ctx) do

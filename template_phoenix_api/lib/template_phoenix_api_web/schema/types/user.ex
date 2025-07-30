@@ -1,33 +1,12 @@
 defmodule TemplatePhoenixApiWeb.Schema.Types.User do
-  use Absinthe.Schema.Notation
+  use TemplatePhoenixApiWeb.Schema.BaseObject
 
   object :user do
-    interface :model_interface
-    interface :node
+    # Implement model interface (includes node interface)
+    model_interface()
     
-    # Interface fields (inherited from model_interface and node)
-    field :id, non_null(:id)
-    field :model_id, non_null(:integer) do
-      resolve fn user, _, _ ->
-        case user.id do
-          id when is_binary(id) ->
-            # Create a consistent integer from UUID for Rails compatibility
-            {:ok, :crypto.hash(:md5, id) |> :binary.decode_unsigned() |> rem(2147483647)}
-          _ ->
-            {:ok, 0}
-        end
-      end
-    end
-    field :created_at, non_null(:iso8601_datetime) do
-      resolve fn user, _, _ ->
-        {:ok, user.inserted_at}
-      end
-    end
-    field :updated_at, non_null(:iso8601_datetime) do
-      resolve fn user, _, _ ->
-        {:ok, user.updated_at}
-      end
-    end
+    # Implement all required interface fields
+    model_fields()
     
     # User-specific fields matching Rails schema
     field :api_access_tokens, list_of(:api_access_token) do

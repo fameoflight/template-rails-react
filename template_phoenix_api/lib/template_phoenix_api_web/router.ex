@@ -24,6 +24,9 @@ defmodule TemplatePhoenixApiWeb.Router do
     plug TemplatePhoenixApiWeb.Plugs.ApiAuthPipeline
   end
 
+  # Note: /cable and /graphql are WebSocket endpoints defined in endpoint.ex
+  # They should not have HTTP routes here as they conflict with socket connections
+
   scope "/api", TemplatePhoenixApiWeb do
     pipe_through :api
 
@@ -45,10 +48,8 @@ defmodule TemplatePhoenixApiWeb.Router do
     options "/auth/reset_password", AuthController, :options
     
     # Internal API routes
-    scope "/internal", Internal do
-      post "/users/google_login", UsersController, :google_login
-      options "/users/google_login", UsersController, :options
-    end
+    post "/internal/users/google_login", Internal.UsersController, :google_login
+    options "/internal/users/google_login", Internal.UsersController, :options
     
     # Legacy auth endpoint for frontend compatibility
     scope "/internal/auth" do
@@ -68,10 +69,12 @@ defmodule TemplatePhoenixApiWeb.Router do
     
     
     # Internal API routes  
-    scope "/internal", Internal do
-      post "/users/avatar", UsersController, :avatar
-      options "/users/avatar", UsersController, :options
-    end
+    post "/internal/users/avatar", Internal.UsersController, :avatar
+    options "/internal/users/avatar", Internal.UsersController, :options
+    
+    # Messages endpoint for loading chat history  
+    get "/internal/messages", Internal.MessagesController, :index
+    options "/internal/messages", Internal.MessagesController, :options
   end
 
   scope "/api", TemplatePhoenixApiWeb do

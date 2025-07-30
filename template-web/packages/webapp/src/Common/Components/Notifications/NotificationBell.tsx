@@ -81,7 +81,7 @@ export default function NotificationBell({
   // Load initial notifications using GraphQL
   const data = useNetworkLazyLoadQuery<NotificationBellQuery>(NOTIFICATIONS_QUERY, {});
   
-  const notifications: Notification[] = (data?.notifications?.edges?.map(edge => edge.node) || []) as Notification[];
+  const notifications: Notification[] = (data?.notifications?.edges?.map(edge => edge?.node).filter(Boolean) || []) as Notification[];
   const [localUnreadCount, setLocalUnreadCount] = useState(data?.unreadNotificationCount || 0);
   
   // Use local state to track unread count for immediate UI updates

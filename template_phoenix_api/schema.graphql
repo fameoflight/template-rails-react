@@ -1,4 +1,5 @@
 schema {
+  subscription: Subscription
   mutation: Mutation
   query: Query
 }
@@ -31,47 +32,86 @@ type Query {
   spoof: Boolean!
 
   superUser: SuperUser!
+
+  "Get messages for a room"
+  messages(roomId: String!, limit: Int): [Message]
+
+  "Get a single message"
+  message(id: ID!): Message
+
+  "Get notifications for the current user"
+  notifications(first: Int, after: String): NotificationConnection
+
+  "Get unread notification count for the current user"
+  unreadNotificationCount: Int
 }
 
 type Mutation {
   register(input: RegisterInput!): AuthPayload
+
   login(input: LoginInput!): AuthPayload
+
+  "Create a new chat message"
+  messageCreate(content: String!, roomId: String!): MessageCreateResponse
+
   apiAccessTokenCreateUpdate(
     "Parameters for ApiAccessTokenCreateUpdate"
     input: ApiAccessTokenCreateUpdateInput!
   ): ApiAccessTokenCreateUpdatePayload
+
   commentCreateUpdate(
     "Parameters for CommentCreateUpdate"
     input: CommentCreateUpdateInput!
   ): CommentCreateUpdatePayload
+
   createDirectUpload(
     "Parameters for CreateDirectUpload"
     input: CreateDirectUploadInput!
   ): CreateDirectUploadPayload
+
   destroyObject(
     "Parameters for DestroyObject"
     input: DestroyObjectInput!
   ): DestroyObjectPayload
+
   discardObject(
     "Parameters for DiscardObject"
     input: DiscardObjectInput!
   ): DiscardObjectPayload
+
   modelAttachmentCreateUpdate(
     "Parameters for ModelAttachmentCreateUpdate"
     input: ModelAttachmentCreateUpdateInput!
   ): ModelAttachmentCreateUpdatePayload
+
   superUserUpdate(
     "Parameters for SuperUserUpdate"
     input: SuperUserUpdateInput!
   ): SuperUserUpdatePayload
+
   userOtpUpdate(
     "Parameters for UserOtpUpdate"
     input: UserOtpUpdateInput!
   ): UserOtpUpdatePayload
+
   userUpdate(
     "Parameters for UserUpdate"
     input: UserUpdateInput!
   ): UserUpdatePayload
+
+  "Mark a notification as read"
+  notificationMarkAsRead(input: NotificationMarkAsReadInput!): NotificationMarkAsReadResponse
+
+  "Mark all notifications as read"
+  notificationMarkAllAsRead(input: NotificationMarkAllAsReadInput!): NotificationMarkAllAsReadResponse
+}
+
+type Subscription {
+  "A message was added to a chat room"
+  messageAdded(roomId: String!): Message
+
+  "User received a new notification or notification count changed"
+  notificationsUpdated: Notification
 }
 
 input ApiAccessTokenCreateUpdateInput {
@@ -294,6 +334,86 @@ enum BlogPostsStatusEnum {
   published
 }
 
+"A notification"
+type Notification {
+  id: ID!
+  modelId: Int!
+  createdAt: ISO8601DateTime!
+  updatedAt: ISO8601DateTime!
+  insertedAt: ISO8601DateTime!
+  title: String!
+  message: String!
+  notificationType: String!
+  readAt: ISO8601DateTime
+  data: JSON
+  user: User!
+  read: Boolean!
+  icon: String!
+  color: String!
+}
+
+"Connection for notifications"
+type NotificationConnection {
+  edges: [NotificationEdge]
+  pageInfo: PageInfo!
+}
+
+"Edge for notification connection"
+type NotificationEdge {
+  node: Notification
+  cursor: String!
+}
+
+"Page info for connections"
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+"Input for marking a notification as read"
+input NotificationMarkAsReadInput {
+  notificationId: ID!
+}
+
+"Input for marking all notifications as read"
+input NotificationMarkAllAsReadInput {
+  confirm: Boolean
+}
+
+"Response for marking a notification as read"
+type NotificationMarkAsReadResponse {
+  notification: Notification
+  unreadCount: Int!
+  errors: [String]
+}
+
+"Response for marking all notifications as read"
+type NotificationMarkAllAsReadResponse {
+  success: Boolean!
+  unreadCount: Int!
+  errors: [String]
+}
+
+"A chat message"
+type Message {
+  id: ID!
+  modelId: Int!
+  createdAt: ISO8601DateTime!
+  updatedAt: ISO8601DateTime!
+  insertedAt: ISO8601DateTime!
+  content: String!
+  roomId: String!
+  user: User!
+}
+
+"Response for creating a message"
+type MessageCreateResponse {
+  message: Message
+  errors: [String]
+}
+
 type ApiAccessToken implements Node & CommentInterface & ModelInterface {
   id: ID!
   modelId: Int!
@@ -372,8 +492,8 @@ type SuperUser implements Node & ModelInterface {
   createdAt: ISO8601DateTime!
   updatedAt: ISO8601DateTime!
   name: String
-  users(term: String): [User!]
-  jobRecords: [JobRecord!]
+  users(term: String): [User!]!
+  jobRecords: [JobRecord!]!
 }
 
 type JobRecord implements Node & ModelInterface {
@@ -400,7 +520,7 @@ type Version implements Node & ModelInterface {
   modelId: Int!
   createdAt: ISO8601DateTime!
   updatedAt: ISO8601DateTime!
-  changes: [VersionChange!]
+  changes: [VersionChange!]!
   event: String!
   itemId: Int!
   itemType: String!
@@ -433,21 +553,37 @@ type AuthPayload {
 }
 
 type User implements Node & ModelInterface {
+  "ID of the object."
   id: ID!
+
   modelId: Int!
+
   createdAt: ISO8601DateTime!
+
   updatedAt: ISO8601DateTime!
+
   apiAccessTokens: [ApiAccessToken]
+
   avatar: Attachment
+
   cannyToken: String
+
   confirmedAt: ISO8601DateTime
+
   email: String!
+
   name: String
+
   nickname: String
+
   confirmed: Boolean!
+
   firstName: String!
+
   otpEnabled: Boolean!
+
   otpProvisioningUri: String!
+
   spoof: Boolean!
 }
 

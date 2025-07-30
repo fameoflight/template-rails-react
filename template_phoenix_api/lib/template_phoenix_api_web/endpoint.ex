@@ -15,6 +15,15 @@ defmodule TemplatePhoenixApiWeb.Endpoint do
     websocket: [connect_info: [session: @session_options]],
     longpoll: [connect_info: [session: @session_options]]
 
+  # Websocket for chat functionality - matches Rails ActionCable path
+  socket "/cable", TemplatePhoenixApiWeb.UserSocket,
+    websocket: true,
+    longpoll: false
+
+  # GraphQL subscriptions over WebSocket
+  socket "/graphql", TemplatePhoenixApiWeb.AbsintheSocket,
+    websocket: true
+
   # Serve at "/" the static files from "priv/static" directory.
   #
   # When code reloading is disabled (e.g., in production),

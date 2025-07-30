@@ -12,6 +12,8 @@ defmodule TemplatePhoenixApi.Application do
       TemplatePhoenixApi.Repo,
       {DNSCluster, query: Application.get_env(:template_phoenix_api, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: TemplatePhoenixApi.PubSub},
+      # Start Presence for chat functionality
+      TemplatePhoenixApiWeb.Presence,
       # Start Oban
       {Oban, Application.fetch_env!(:template_phoenix_api, Oban)},
       # Start a worker by calling: TemplatePhoenixApi.Worker.start_link(arg)
